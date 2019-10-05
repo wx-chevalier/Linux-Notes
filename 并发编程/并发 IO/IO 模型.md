@@ -30,7 +30,7 @@
 
 ## 阻塞 IO (Blocking IO)
 
-当用户进程调用了 recvfrom 这个系统调用，内核就开始了 IO 的第一个阶段：等待数据准备。对于 network io 来说，很多时候数据在一开始还没有到达（比如，还没有收到一个完整的 UDP 包），这个时候内核就要等待足够的数据到来。而在用户进程这边，整个进程会被阻塞。当内核一直等到数据准备好了，它就会将数据从内核中拷贝到用户内存，然后内核返回结果，用户进程才解除 block 的状态，重新运行起来。 所以，blocking IO 的特点就是在 IO 执行的两个阶段都被 block 了。（整个过程一直是阻塞的）
+当用户进程调用了 recvfrom 这个系统调用，内核就开始了 IO 的第一个阶段：等待数据准备。对于 network io 来说，很多时候数据在一开始还没有到达（比如，还没有收到一个完整的 UDP 包），这个时候内核就要等待足够的数据到来。而在用户进程这边，整个进程会被阻塞。当内核一直等到数据准备好了，它就会将数据从内核中拷贝到用户内存，然后内核返回结果，用户进程才解除 block 的状态，重新运行起来。所以，blocking IO 的特点就是在 IO 执行的两个阶段都被 block 了。（整个过程一直是阻塞的）
 
 ![](https://i.postimg.cc/SxZTyQRP/image.png)
 
@@ -42,7 +42,7 @@ linux 下，可以通过设置 socket 使其变为 non-blocking。当对一个 n
 
 ![](https://i.postimg.cc/bJ192qYp/image.png)
 
-当用户进程调用 recvfrom 时，系统不会阻塞用户进程，而是立刻返回一个 ewouldblock 错误，从用户进程角度讲 ，并不需要等待，而是马上就得到了一个结果（这个结果就是 ewouldblock ）。用户进程判断标志是 ewouldblock 时，就知道数据还没准备好，于是它就可以去做其他的事了，于是它可以再次发送 recvfrom，一旦内核中的数据准备好了。并且又再次收到了用户进程的 system call，那么它马上就将数据拷贝到了用户内存，然后返回。 当一个应用程序在一个循环里对一个非阻塞调用 recvfrom，我们称为轮询。应用程序不断轮询内核，看看是否已经准备好了某些操作。这通常是浪费 CPU 时间。
+当用户进程调用 recvfrom 时，系统不会阻塞用户进程，而是立刻返回一个 ewouldblock 错误，从用户进程角度讲 ，并不需要等待，而是马上就得到了一个结果（这个结果就是 ewouldblock ）。用户进程判断标志是 ewouldblock 时，就知道数据还没准备好，于是它就可以去做其他的事了，于是它可以再次发送 recvfrom，一旦内核中的数据准备好了。并且又再次收到了用户进程的 system call，那么它马上就将数据拷贝到了用户内存，然后返回。当一个应用程序在一个循环里对一个非阻塞调用 recvfrom，我们称为轮询。应用程序不断轮询内核，看看是否已经准备好了某些操作。这通常是浪费 CPU 时间。
 
 ## IO 复用（IO Multiplexing)
 
@@ -54,7 +54,7 @@ Linux 提供 select/epoll，进程通过将一个或者多个 fd 传递给 selec
 
 ![](https://i.postimg.cc/TwTjCbtK/image.png)
 
-IO 复用模型具体流程：用户进程调用了 select，那么整个进程会被 block，而同时，内核会“监视”所有 select 负责的 socket，当任何一个 socket 中的数据准备好了，select 就会返回。这个时候用户进程再调用 read 操作，将数据从内核拷贝到用户进程。 这个图和 blocking IO 的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个
+IO 复用模型具体流程：用户进程调用了 select，那么整个进程会被 block，而同时，内核会“监视”所有 select 负责的 socket，当任何一个 socket 中的数据准备好了，select 就会返回。这个时候用户进程再调用 read 操作，将数据从内核拷贝到用户进程。这个图和 blocking IO 的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个
 system call (select 和 recvfrom)，而 blocking IO 只调用了一个 system call (recvfrom)。但是，用 select 的优势在于它可以同时处理多个 connection。
 
 ## 信号驱动的 IO (Signal Driven IO)

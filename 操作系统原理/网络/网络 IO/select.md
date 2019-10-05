@@ -55,7 +55,7 @@ struct pollfd {
     }
 ```
 
-poll 调用需要传递的是一个 pollfd 结构的数组，调用返回时结果信息也存放在这个数组里面。 pollfd 的结构中存放着 fd、我们对该 fd 感兴趣的事件(events)以及该 fd 实际发生的事件(revents)。poll 传递的不是固定大小的 bitmap，因此 select 的问题 1 解决了；poll 将感兴趣事件和实际发生事件分开了，因此 select 的问题 2 也解决了。但 select 的问题 3 和问题 4 仍然没有解决。
+poll 调用需要传递的是一个 pollfd 结构的数组，调用返回时结果信息也存放在这个数组里面。pollfd 的结构中存放着 fd、我们对该 fd 感兴趣的事件(events)以及该 fd 实际发生的事件(revents)。poll 传递的不是固定大小的 bitmap，因此 select 的问题 1 解决了；poll 将感兴趣事件和实际发生事件分开了，因此 select 的问题 2 也解决了。但 select 的问题 3 和问题 4 仍然没有解决。
 
 ## 处理逻辑
 

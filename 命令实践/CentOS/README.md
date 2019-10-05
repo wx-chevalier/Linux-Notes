@@ -130,7 +130,7 @@ yum grouplist ｜more ←如果输出太长，可以使用“｜more”分页显
 
 在 grouplist 的输出结果中的“InstalledGroups:”部分中，如果你能找到“XWindow System”和“GNOME Desktop Environment 或 KDE (K DesktopEnvironment)或 XFCE-4.4”的话，证明你安装了桌面环境。
 
-在 grouplist 的输出结果中的“InstalledGroups:”部分中，如果你能找到“XWindow System”和“GNOME Desktop Environment 或 KDE (K DesktopEnvironment)或 XFCE-4.4”的话，证明你安装了桌面环境。 2.如果系统安装之前采用最小化安装，没有安装桌面，那么先安装桌面系统：
+在 grouplist 的输出结果中的“InstalledGroups:”部分中，如果你能找到“XWindow System”和“GNOME Desktop Environment 或 KDE (K DesktopEnvironment)或 XFCE-4.4”的话，证明你安装了桌面环境。2.如果系统安装之前采用最小化安装，没有安装桌面，那么先安装桌面系统：
 
 ```
 yum group install "X Window System"
