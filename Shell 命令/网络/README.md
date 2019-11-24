@@ -1,9 +1,0 @@
-# 网络
-
-# DNS
-
-DNS 解析检索与查询：
-
-```sh
-$ dig ns alicdn.com
-```
