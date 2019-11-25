@@ -29,6 +29,7 @@ BIO 即同步阻塞式 IO，是面向流的，阻塞式的，串行的一个过�
 # Leader-Follow 模型
 
 ![](http://www.dengshenyu.com/assets/redis-reactor/reactor-mode2.png)
+
 上文描述的多进程/多线程模型最大的问题是，进程/线程创建和销毁的开销很大。所以上面的模式没办法应用于非常繁忙的服务器程序。对应的改进版解决了此问题，这就是经典的 **Leader-Follower** 模型。
 
 ![](http://rango.swoole.com/static/io/2.png)

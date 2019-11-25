@@ -2,6 +2,8 @@
 
 Reactor 模型在 Linux 系统中的具体实现即是 select/poll/epoll/kqueue，像 Redis 中即是采用了 Reactor 模型实现了单进程单线程高并发。Reactor 模型的理论基础可以参考 [reactor-siemens](http://www.dre.vanderbilt.edu/%7Eschmidt/PDF/reactor-siemens.pdf)
 
+![Redis 非阻塞与多线程模型对比](https://s2.ax1x.com/2019/11/25/MvR524.png)
+
 # 线程模型
 
 ## 单线程模型

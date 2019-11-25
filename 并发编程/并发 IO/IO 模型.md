@@ -24,7 +24,7 @@
 - 信号驱动的 IO (Signal Driven IO)
 - 异步 IO (Asynchrnous IO)
 
-![](https://i.postimg.cc/wvr0DwLQ/image.png)
+![IO 模型](https://i.postimg.cc/wvr0DwLQ/image.png)
 
 前四个模型之间的主要区别是第一阶段，四个模型的第二阶段是一样的，过程受阻在调用 recvfrom 当数据从内核拷贝到用户缓冲区。然而，异步 IO 处理两个阶段，与前四个不同。
 
