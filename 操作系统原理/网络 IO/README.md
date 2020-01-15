@@ -1,6 +1,6 @@
 # 网络 IO
 
-在[虚拟存储](https://ngte-infras.gitbook.io/i/?q=虚拟存储存储)一章中我们讨论了内核空间与用户空间的划分，即针对 32 位 Linux 操作系统而言，将最高的 1G 字节（从虚拟地址 0xC0000000 到 0xFFFFFFFF），供内核使用，称为内核空间，而将较低的 3G 字节（从虚拟地址 0x00000000 到 0xBFFFFFFF），供各个进程使用，称为用户空间。
+在[虚拟存储](https://ng-tech.icu/DistributedSystem-Series/#/?q=虚拟存储存储)一章中我们讨论了内核空间与用户空间的划分，即针对 32 位 Linux 操作系统而言，将最高的 1G 字节（从虚拟地址 0xC0000000 到 0xFFFFFFFF），供内核使用，称为内核空间，而将较低的 3G 字节（从虚拟地址 0x00000000 到 0xBFFFFFFF），供各个进程使用，称为用户空间。
 
 ![读取网卡数据](https://i.postimg.cc/C1jPjGMZ/image.png)
 
