@@ -20,7 +20,7 @@
 
 - 用户调用系统调用 write 写一个文件，会调到 sys_write 函数；
 
-- 经过 VFS 虚拟文件系统层，调用 vfs_write， 如果是缓存写方式，则写入 page cache，然后就返回，后续就是刷脏页的流程；如果是 Direct I/O 的方式，就会走到 do_blockdev_direct_IO 的流程；
+- 经过 VFS 虚拟文件系统层，调用 vfs_write，如果是缓存写方式，则写入 page cache，然后就返回，后续就是刷脏页的流程；如果是 Direct I/O 的方式，就会走到 do_blockdev_direct_IO 的流程；
 
 - 如果操作的设备是逻辑设备如 LVM，MDRAID 设备等，会进入到对应内核模块的处理函数里进行一些处理，否则就直接构造 bio 请求，调用 submit_bio 往具体的块设备下发请求，submit_bio 函数通过 generic_make_request 转发 bio，generic_make_request 是一个循环，其通过每个块设备下注册的 q->make_request_fn 函数与块设备进行交互；
 
