@@ -12,6 +12,8 @@
         
     - 操作系统
       - [TencentOS](/IoT/操作系统/TencentOS.md)
+    - [芯片](/IoT/芯片/README.md)
+      
     - [设备接入](/IoT/设备接入/README.md)
       
   - Shell 命令
