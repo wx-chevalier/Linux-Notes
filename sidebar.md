@@ -26,6 +26,7 @@
       - [语法基础](/Shell%20命令/Shell%20编程/语法基础.md)
     - [命令执行](/Shell%20命令/命令执行/README.md)
       - [Funny Terminals](/Shell%20命令/命令执行/Funny%20Terminals.md)
+      - [脚本执行](/Shell%20命令/命令执行/脚本执行.md)
     - [文本处理](/Shell%20命令/文本处理/README.md)
       - [Nano](/Shell%20命令/文本处理/Nano.md)
       - [Vim](/Shell%20命令/文本处理/Vim.md)
