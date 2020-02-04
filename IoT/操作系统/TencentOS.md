@@ -1,6 +1,6 @@
 # TencentOS
 
-TencentOS tiny 提供精简的 RTOS内核，其架构图如下：
+TencentOS tiny 提供精简的 RTOS 内核，其架构图如下：
 
 ![架构](https://s2.ax1x.com/2019/09/29/u8hhFK.jpg)
 

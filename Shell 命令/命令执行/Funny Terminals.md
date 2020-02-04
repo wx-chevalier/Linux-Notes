@@ -1,5 +1,3 @@
-
-
 # Funny Terminals
 
 ```sh
