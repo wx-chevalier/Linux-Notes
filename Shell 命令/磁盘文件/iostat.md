@@ -45,4 +45,4 @@ $ fio --name=randwrite --rw=randwrite --bs=4k --size=20G --runtime=1200 --
 
 - %util：工作时间或者繁忙时间占总时间的百分比。
 
-值得关注的是，avgrq-sz 这个值反应了用户的 IO 模式，即用户过来的 IO 是大 IO 还是小 IO。如果我们 fio 命令设置的 bs 为 4k，那么 sdc 的 avgrq-sz 总是 8，即`8个扇区 = 8*512（Byte） = 4KB`。
+值得关注的是，avgrq-sz 这个值反应了用户的 IO 模式，即用户过来的 IO 是大 IO 还是小 IO。如果我们 fio 命令设置的 bs 为 4k，那么 sdc 的 avgrq-sz 总是 8，即`8个扇区 = 8*512（Byte）= 4KB`。

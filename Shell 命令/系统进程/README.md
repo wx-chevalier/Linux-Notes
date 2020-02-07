@@ -56,7 +56,7 @@ cpu3 34711 258 15045 119083615 560 0 374 0 0 0
      (us)  (ni)    (sy)     (id)      (wa)   (hi)  (si)  (st) (guest) (guest_nice)
 ```
 
-对于 CPU 利用率描述，Linux man-pages 用的都是 time（ time running，time spent，time stolen）这个单词。这里的统计数据，其实就是 CPU 从系统启动至当前，各项（us, sy, ni, id, wa, hi, si, st）占用的时间，单位是 jiffies。通过 sysconf(\_SC_CLK_TCK) 可以获得 1 秒被分成多少个 jiffies 。一般是 100，即 1 jiffies == 0.01 s。
+对于 CPU 利用率描述，Linux man-pages 用的都是 time（time running，time spent，time stolen）这个单词。这里的统计数据，其实就是 CPU 从系统启动至当前，各项（us, sy, ni, id, wa, hi, si, st）占用的时间，单位是 jiffies。通过 sysconf(\_SC_CLK_TCK) 可以获得 1 秒被分成多少个 jiffies 。一般是 100，即 1 jiffies == 0.01 s。
 
 计算 CPU 使用率的基本原理就是从 /proc/stat 进行采样和计算。最简单的方法，一秒采样一次 /proc/stat，如：
 第 N 秒采样得到 cpu_total1 = us1 + ni1 + sy1 + id1 + wa1 + hi1 + si1 + st1 + guest1 + guest_nice1
