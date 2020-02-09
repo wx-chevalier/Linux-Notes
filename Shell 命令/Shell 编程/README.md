@@ -7,7 +7,7 @@ Shell 是用户和 Linux（或者更准确的说，是用户和 Linux 内核）�
 - /bin/sh (已经被 /bin/bash 所取代)
 - /bin/bash (就是 Linux 默认的 Shell)
 - /bin/ksh (KornShell 由 AT&T Bell lab. 发展出来的，兼容于 bash)
-- /bin/tcsh (整合 C Shell ，提供更多的功能)
+- /bin/tcsh (整合 C Shell，提供更多的功能)
 - /bin/csh (已经被 /bin/tcsh 所取代)
 - /bin/zsh (基于 ksh 发展出来的，功能更强大的 Shell)
 

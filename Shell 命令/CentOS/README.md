@@ -172,7 +172,7 @@ startx
 需要先配置图形界面信息(old)方法 2：修改/etc/inittab 文件中的
 
 ```
-id:3:initdefault ，将3改为5 ，重新启动系统；
+id:3:initdefault，将3改为5，重新启动系统；
 ```
 
 方法 3：进入图形界面：
@@ -211,7 +211,7 @@ shutdown +2 "The machine will shutdown" # 2min 后关机，并通知在线者
 真机环境中，在图形界面和文本界面间快捷键切换：
 
 ```
-Ctrl+Alt+F(n) , 其中F(n)为F1-F6 ，为6个控制台；
+Ctrl+Alt+F(n) , 其中F(n)为F1-F6，为6个控制台；
 Ctrl+ALT+F7 ；
 eg:CTRL+ALT+F1是进入文本界面，CTRL+ALT+F7才是图形界面。
 ```
@@ -256,9 +256,9 @@ systemctl restart network
 
 ifconfig 使用 ip addr 命令代替，
 
-ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 netstat，但是现在的 ss 和以前的完全是两样 ，还是得装上才行方便查看端口占用和 tcp 链接攻击等等。
+ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 netstat，但是现在的 ss 和以前的完全是两样，还是得装上才行方便查看端口占用和 tcp 链接攻击等等。
 
-ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 netstat，但是现在的 ss 和以前的完全是两样 ，还是得装上才行方便查看端口占用和 tcp 链接攻击等等。
+ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 netstat，但是现在的 ss 和以前的完全是两样，还是得装上才行方便查看端口占用和 tcp 链接攻击等等。
 Centos7 下把 net-tools 包装上就好了：
 
 ```
