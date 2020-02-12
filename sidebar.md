@@ -16,7 +16,7 @@
       
     - [设备接入](/IoT/设备接入/README.md)
       
-  - Shell 命令
+  - [Shell 命令](/Shell%20命令/README.md)
     - [CentOS](/Shell%20命令/CentOS/README.md)
       
     - [Shell 编程](/Shell%20命令/Shell%20编程/README.md)
