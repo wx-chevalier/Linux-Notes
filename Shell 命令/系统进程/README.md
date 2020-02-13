@@ -63,7 +63,7 @@ cpu3 34711 258 15045 119083615 560 0 374 0 0 0
 第 N+1 秒采样得到 cpu_total2 = us2 + ni2 + sy2 + id2 + wa2 + hi2 + si2 + st2 + guest2 + guest_nice2
 us 的占比为 (us2 - us1) / (cpu_total2 - cpu_total1)。
 
-nice 是一个可以修改进程调度优先级的命令，在 Linux 中，一个进程有一个 nice 值，代表的是这个进程的调度优先级。越 nice （nice 值越大）的进程，调度优先级越低，越会“谦让”，所以它的获得 CPU 的机会就越低。ni 代表的是 niced 用户态进程消耗的 CPU。
+nice 是一个可以修改进程调度优先级的命令，在 Linux 中，一个进程有一个 nice 值，代表的是这个进程的调度优先级。越 nice（nice 值越大）的进程，调度优先级越低，越会“谦让”，所以它的获得 CPU 的机会就越低。ni 代表的是 niced 用户态进程消耗的 CPU。
 
 如果 sy 过高，说明程序调用 Linux 系统调用的开销很大，不同的系统调用开销不一样，pthread_create 的开销比较大。
 

@@ -45,8 +45,8 @@
 
 查看分区使用状况：df -lh
 
-重启：init 6  或 reboot
-关机：init 0 或 shutdown
+重启：init 6 或reboot
+关机：init 0或shutdown
 ```
 
 **使用 firewall 开放 Linux 端口**：

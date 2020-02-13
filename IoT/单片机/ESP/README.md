@@ -10,7 +10,7 @@ ESP8266,及其升级版 ESP32 系列,其本质是一个带有 Wlan 收发器的�
 
 4.使用官方 SDK 从底层进行开发;
 
-ESP8266 是单核 Tensilica L106 （32 位 MCU）的 Wi-Fi 芯片，主频最高可达 160MHz。
+ESP8266 是单核 Tensilica L106（32 位 MCU）的 Wi-Fi 芯片，主频最高可达 160MHz。
 
 ESP32 是双核 Tensilica L108 (32 位 MCU）的 Wi-Fi 芯片，主频更高可达 250MHz，性能更强，内存更大有 400KB SRAM。另外还集成了蓝牙 BLE。
 
