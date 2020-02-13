@@ -36,15 +36,15 @@ Reactor 模型在 Linux 系统中的具体实现即是 select/poll/epoll/kqueue�
 
 ![](http://www.dengshenyu.com/assets/redis-reactor/reactor-mode3.png)
 
-- Handles ：表示操作系统管理的资源，我们可以理解为 fd。
+- Handles：表示操作系统管理的资源，我们可以理解为 fd。
 
-- Synchronous Event Demultiplexer ：同步事件分离器，阻塞等待 Handles 中的事件发生。
+- Synchronous Event Demultiplexer：同步事件分离器，阻塞等待 Handles 中的事件发生。
 
-- Initiation Dispatcher ：初始分派器，作用为添加 Event handler(事件处理器)、删除 Event handler 以及分派事件给 Event handler。也就是说，Synchronous Event Demultiplexer 负责等待新事件发生，事件发生时通知 Initiation Dispatcher，然后 Initiation Dispatcher 调用 event handler 处理事件。
+- Initiation Dispatcher：初始分派器，作用为添加 Event handler(事件处理器)、删除 Event handler 以及分派事件给 Event handler。也就是说，Synchronous Event Demultiplexer 负责等待新事件发生，事件发生时通知 Initiation Dispatcher，然后 Initiation Dispatcher 调用 event handler 处理事件。
 
-- Event Handler ：事件处理器的接口
+- Event Handler：事件处理器的接口
 
-- Concrete Event Handler ：事件处理器的实际实现，而且绑定了一个 Handle。因为在实际情况中，我们往往不止一种事件处理器，因此这里将事件处理器接口和实现分开，与 C++、Java 这些高级语言中的多态类似。
+- Concrete Event Handler：事件处理器的实际实现，而且绑定了一个 Handle。因为在实际情况中，我们往往不止一种事件处理器，因此这里将事件处理器接口和实现分开，与 C++、Java 这些高级语言中的多态类似。
 
 ## 处理逻辑
 

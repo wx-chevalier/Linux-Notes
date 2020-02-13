@@ -40,7 +40,7 @@ struct epoll_event {
 
 events 可以是以下几个宏的集合：
 
-- EPOLLIN ：表示对应的文件描述符可以读(包括对端 SOCKET 正常关闭)；
+- EPOLLIN：表示对应的文件描述符可以读(包括对端 SOCKET 正常关闭)；
 - EPOLLOUT：表示对应的文件描述符可以写；
 - EPOLLPRI：表示对应的文件描述符有紧急的数据可读(这里应该表示有带外数据到来)；
 - EPOLLERR：表示对应的文件描述符发生错误；

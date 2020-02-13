@@ -23,7 +23,7 @@ $ fio --name=randwrite --rw=randwrite --bs=4k --size=20G --runtime=1200 --
 
 - wrqm/s: 每秒合并写操作的次数
 
-- r/s ：每秒读操作的次数
+- r/s：每秒读操作的次数
 
 - w/s : 每秒写操作的次数
 
