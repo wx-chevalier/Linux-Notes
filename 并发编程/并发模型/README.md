@@ -28,4 +28,4 @@
 
 - [Lock-Free and Wait-Free, definition and examples](http://concurrencyfreaks.blogspot.co.id/2013/05/lock-free-and-wait-free-definition-and.html)
 
-- [并行编程 —— 并发级别](http://www.cnblogs.com/jiayy/p/3246167.html)
+- [并行编程：并发级别](http://www.cnblogs.com/jiayy/p/3246167.html)
