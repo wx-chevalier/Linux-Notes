@@ -301,6 +301,6 @@ PrivateTmp=True 表示给服务分配独立的临时空间注意：[Service]的�
 | 6                 | runlevel6.target, reboot.target                       | 重启                                                      |
 | emergency         | emergency.target                                      | 紧急 Shell                                                |
 
-# Todos
+# 链接
 
 - [Systemd 详解](https://blog.linuxeye.com/400.html)
