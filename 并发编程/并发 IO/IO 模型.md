@@ -54,8 +54,7 @@ Linux 提供 select/epoll，进程通过将一个或者多个 fd 传递给 selec
 
 ![epoll，进程通过将一个或者多个](https://i.postimg.cc/TwTjCbtK/image.png)
 
-IO 复用模型具体流程：用户进程调用了 select，那么整个进程会被 block，而同时，内核会“监视”所有 select 负责的 socket，当任何一个 socket 中的数据准备好了，select 就会返回。这个时候用户进程再调用 read 操作，将数据从内核拷贝到用户进程。这个图和 blocking IO 的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个
-system call (select 和 recvfrom)，而 blocking IO 只调用了一个 system call (recvfrom)。但是，用 select 的优势在于它可以同时处理多个 connection。
+IO 复用模型具体流程：用户进程调用了 select，那么整个进程会被 block，而同时，内核会“监视”所有 select 负责的 socket，当任何一个 socket 中的数据准备好了，select 就会返回。这个时候用户进程再调用 read 操作，将数据从内核拷贝到用户进程。这个图和 blocking IO 的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个 system call (select 和 recvfrom)，而 blocking IO 只调用了一个 system call (recvfrom)。但是，用 select 的优势在于它可以同时处理多个 connection。
 
 ## 信号驱动的 IO (Signal Driven IO)
 
@@ -73,9 +72,7 @@ system call (select 和 recvfrom)，而 blocking IO 只调用了一个 system ca
 
 # 非阻塞与异步
 
-在传统的网络服务器的构建中，IO 模式会按照 Blocking/Non-Blocking、Synchronous/Asynchronous 这两个标准进行分类，其中 Blocking 与 Synchronous 大同小异，而 NIO 与 Async 的区别在于 NIO 强调的是轮询（Polling），而 Async 强调的是通知（Notification）。
-
-譬如在一个典型的单进程单线程 Socket 接口中，阻塞型的接口必须在上一个 Socket 连接关闭之后才能接入下一个 Socket 连接。而对于 NIO 的 Socket 而言，服务端应用会从内核获取到一个特殊的 "Would Block" 错误信息，但是并不会阻塞到等待发起请求的 Socket 客户端停止。
+在传统的网络服务器的构建中，IO 模式会按照 Blocking/Non-Blocking、Synchronous/Asynchronous 这两个标准进行分类，其中 Blocking 与 Synchronous 大同小异，而 NIO 与 Async 的区别在于 NIO 强调的是轮询（Polling），而 Async 强调的是通知（Notification）。譬如在一个典型的单进程单线程 Socket 接口中，阻塞型的接口必须在上一个 Socket 连接关闭之后才能接入下一个 Socket 连接。而对于 NIO 的 Socket 而言，服务端应用会从内核获取到一个特殊的 "Would Block" 错误信息，但是并不会阻塞到等待发起请求的 Socket 客户端停止。
 
 ![](https://i.postimg.cc/wx4t0D8f/image.png)
 
