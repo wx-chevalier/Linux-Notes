@@ -4,32 +4,6 @@ Reactor 模型在 Linux 系统中的具体实现即是 select/poll/epoll/kqueue�
 
 ![Redis 非阻塞与多线程模型对比](https://s2.ax1x.com/2019/11/25/MvR524.png)
 
-# 线程模型
-
-## 单线程模型
-
-所有的 IO 操作都在同一个 NIO 线程上面完成，NIO 线程需要处理客户端的 TCP 连接，同时读取客户端 Socket 的请求或者应答消息以及向客户端发送请求或者应答消息。如下图：
-
-![](https://i.postimg.cc/cLws0kS8/1fdcd36e76359339539a507278f566d7.png)
-
-由于采用的是非阻塞的 IO，所有 IO 操作都不会导致阻塞，从理论上来说，一个线程可以独立处理所有的 IO 相关操作，处理流程如下:
-
-![](https://i.postimg.cc/zfNqBwz2/65cdba67cfcee3302b88d114e2fd5baf.png)
-
-可以看出，单线程模型只适用并发量比较小的应用场景。当一个 NIO 线程同时处理上万个连接时，处理速度会变慢，会导致大量的客户端连接超时，超时之后如果进行重发，更加会加重了 NIO 线程的负载，最终会有大量的消息积压和处理超时，NIO 线程会成为系统的瓶颈。
-
-## 多线程模型
-
-多线程模型与单线程模型最大的区别是有专门的一组 NIO 线程处理 IO 操作，一般使用线程池的方式实现。一个 NIO 线程同时处理多条连接，一个连接只能属于 1 个 NIO 线程，这样能够防止并发操作问题。
-
-![](https://i.postimg.cc/s2JsZB1j/fbd2af5606580061718cb69254f95a71.png)
-
-## 主从多线程模型
-
-服务端用于接收客户端连接的不是 1 个单独的 NIO 线程了，而是采用独立的 NIO 线程池。Acceptor 接收 TCP 连接请求处理完成之后，将创建新的 SocketChannel 注册到处理连接的 IO 线程池中的某个 IO 线程上，有它去处理 IO 读写以及编解码的工作。Acceptor 只用于客户端登录、握手以及认证，一旦连接成功之后，将链路注册到线程池的 IO 线程上。
-
-![](https://i.postimg.cc/SsNqLyzW/e774d586cd02cf2d4e7adba4b8300eac.png)
-
 # 实现逻辑
 
 ## 核心组件
@@ -51,6 +25,7 @@ Reactor 模型在 Linux 系统中的具体实现即是 select/poll/epoll/kqueue�
 Reactor 模型的基本的处理逻辑为：(1)我们注册 Concrete Event Handler 到 Initiation Dispatcher 中。(2)Initiation Dispatcher 调用每个 Event Handler 的 get_handle 接口获取其绑定的 Handle。(3)Initiation Dispatcher 调用 handle_events 开始事件处理循环。在这里，Initiation Dispatcher 会将步骤 2 获取的所有 Handle 都收集起来，使用 Synchronous Event Demultiplexer 来等待这些 Handle 的事件发生。(4)当某个(或某几个)Handle 的事件发生时，Synchronous Event Demultiplexer 通知 Initiation Dispatcher。(5)Initiation Dispatcher 根据发生事件的 Handle 找出所对应的 Handler。(6)Initiation Dispatcher 调用 Handler 的 handle_event 方法处理事件。
 
 时序图如下：
+
 ![](http://www.dengshenyu.com/assets/redis-reactor/reactor-mode4.png)
 
 抽象来说，Reactor 有 4 个核心的操作：
