@@ -1,6 +1,6 @@
 # MQTT
 
-MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的轻量级通讯协议，该协议构建于 TCP/IP 协议上，由 IBM 在 1999 年发布。IoT 设备要运作，就必须连接到互联网，设备才能相互协作，以及与后端服务协同工作。而互联网的基础网络协议是 TCP/IP，因此 MQTT 已经慢慢的已经成为了 IoT 通讯的标准。
+MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的轻量级通讯协议，该协议构建于 TCP/IP 协议上，由 IBM 在 1999 年发布， MQTT 已经慢慢的已经成为了 IoT 通讯的标准。
 
 MQTT 最大优点在于，可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。作为一种低开销、低带宽占用的即时通讯协议，使其在物联网、小型设备、移动应用等方面有较广泛的应用，譬如受限的环境中，通过卫星链路通信传感器、偶尔拨号的医疗设备、智能家居等等。
 
