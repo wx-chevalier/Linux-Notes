@@ -2,12 +2,20 @@
 
 Unix 管道的发明者道格·麦克罗伊（Doug McIlroy）在 1964 年首先描述了这种情况：“当我们需要将消息从一个程序传递另一个程序时，我们需要一种类似水管法兰的拼接程序的方式，I/O 应该也按照这种方式进行“。水管的类比仍然在生效，通过管道连接程序的想法成为了现在被称为 Unix 哲学的一部分，这一组设计原则在 Unix 用户与开发者之间流行起来，该哲学在 1978 年表述如下：
 
+- _Do one thing and do it well_ - Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+- _Everything is file_ - Ease of use and security is offered by treating hardware as a file.
+- _Small is beautiful_.
+- _Store data and configuration in flat text files_ - Text file is a universal interface. Easy to create, backup and move to another system.
+- _Use shell scripts to increase leverage and portability_ - Use shell script to automate common tasks across various UNIX / Linux installations.
+- _Chain programs together to complete complex task_ - Use shell [pipes](https://bash.cyberciti.biz/guide/Pipes) and [filters](https://bash.cyberciti.biz/guide/Filters) to chain small utilities that perform one task at time.
+- _Choose portability over efficiency._
+- _Keep it Simple, Stupid (KISS)._
+
+其中文归纳如下：
+
 - 让每个程序都做好一件事。要做一件新的工作，写一个新程序，而不是通过添加“功能”让老程序复杂化。
-
 - 期待每个程序的输出成为另一个程序的输入。不要将无关信息混入输出。避免使用严格的列数据或二进制输入格式。不要坚持交互式输入。
-
 - 设计和构建软件，甚至是操作系统，要尽早尝试，最好在几周内完成。不要犹豫，扔掉笨拙的部分，重建它们。
-
 - 优先使用工具来减轻编程任务，即使必须曲线救国编写工具，且在用完后很可能要扔掉大部分。
 
 这种方法：自动化，快速原型设计，增量式迭代，对实验友好，将大型项目分解成可管理的块，听起来非常像今天的敏捷开发和 DevOps 运动。sort 工具是一个很好的例子。可以说它比大多数编程语言标准库中的实现（它们不会利用磁盘或使用多线程，即使这样做有很大好处）要更好。然而，单独使用 sort 几乎没什么用。它只能与其他 Unix 工具（如 uniq）结合使用。像 bash 这样的 Unix shell 可以让我们轻松地将这些小程序组合成令人讶异的强大数据处理任务。尽管这些程序中有很多是由不同人群编写的，但它们可以灵活地结合在一起。

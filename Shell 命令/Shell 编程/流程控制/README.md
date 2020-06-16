@@ -131,17 +131,17 @@ fi
 ## 文件判断
 
 ```sh
-# 判断目录$doiido是否存在，若不存在，则新建一个
+# 判断目录 $doiido 是否存在，若不存在，则新建一个
 if [ ! -d "$doiido"]; then
 　　mkdir "$doiido"
 fi
 
-# 判断普通文件$doiido是否存，若不存在，则新建一个
+# 判断普通文件 $doiido 是否存，若不存在，则新建一个
 if [ ! -f "$doiido" ]; then
 　　touch "$doiido"
 fi
 
-# 判断$doiido是否存在并且是否具有可执行权限
+# 判断 $doiido 是否存在并且是否具有可执行权限
 if [ ! -x "$doiido"]; then
 　　mkdir "$doiido"
 chmod +x "$doiido"
