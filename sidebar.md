@@ -24,7 +24,9 @@
         - [Funny Terminals](/Shell%20命令/Shell%20编程/交互式%20Shell/Funny%20Terminals.md)
         - [菜单与对话框](/Shell%20命令/Shell%20编程/交互式%20Shell/菜单与对话框.md)
       - [函数](/Shell%20命令/Shell%20编程/函数/README.md)
-        
+        - [函数定义](/Shell%20命令/Shell%20编程/函数/函数定义.md)
+        - [函数调用](/Shell%20命令/Shell%20编程/函数/函数调用.md)
+        - [局部变量与返回](/Shell%20命令/Shell%20编程/函数/局部变量与返回.md)
       - [文件操作](/Shell%20命令/Shell%20编程/文件操作/README.md)
         
       - [流程控制](/Shell%20命令/Shell%20编程/流程控制/README.md)
