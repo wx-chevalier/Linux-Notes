@@ -50,10 +50,9 @@
       - [系统权限](/Shell%20命令/用户权限/系统权限.md)
     - [磁盘文件](/Shell%20命令/磁盘文件/README.md)
       - [iostat](/Shell%20命令/磁盘文件/iostat.md)
+      - [创建与读写](/Shell%20命令/磁盘文件/创建与读写.md)
     - [系统进程](/Shell%20命令/系统进程/README.md)
-      - [perf](/Shell%20命令/系统进程/perf.md)
-      - [stat](/Shell%20命令/系统进程/stat.md)
-      - [top](/Shell%20命令/系统进程/top.md)
+      
     - [网络](/Shell%20命令/网络/README.md)
       - [netstat](/Shell%20命令/网络/netstat.md)
       - [网卡配置](/Shell%20命令/网络/网卡配置.md)
