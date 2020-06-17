@@ -19,9 +19,14 @@
   - [Shell 命令](/Shell%20命令/README.md)
     - [CentOS](/Shell%20命令/CentOS/README.md)
       
-    - [Funny Terminals](/Shell%20命令/Funny%20Terminals.md)
     - [Shell 编程](/Shell%20命令/Shell%20编程/README.md)
-      - [文件操作](/Shell%20命令/Shell%20编程/文件操作.md)
+      - [交互式 Shell](/Shell%20命令/Shell%20编程/交互式%20Shell/README.md)
+        - [Funny Terminals](/Shell%20命令/Shell%20编程/交互式%20Shell/Funny%20Terminals.md)
+        - [菜单与对话框](/Shell%20命令/Shell%20编程/交互式%20Shell/菜单与对话框.md)
+      - [函数](/Shell%20命令/Shell%20编程/函数/README.md)
+        
+      - [文件操作](/Shell%20命令/Shell%20编程/文件操作/README.md)
+        
       - [流程控制](/Shell%20命令/Shell%20编程/流程控制/README.md)
         - [循环](/Shell%20命令/Shell%20编程/流程控制/循环.md)
         - [条件判断](/Shell%20命令/Shell%20编程/流程控制/条件判断.md)
@@ -52,7 +57,8 @@
       - [iostat](/Shell%20命令/磁盘文件/iostat.md)
       - [创建与读写](/Shell%20命令/磁盘文件/创建与读写.md)
     - [系统进程](/Shell%20命令/系统进程/README.md)
-      
+      - [进程控制](/Shell%20命令/系统进程/进程控制.md)
+      - [进程查看](/Shell%20命令/系统进程/进程查看.md)
     - [网络](/Shell%20命令/网络/README.md)
       - [netstat](/Shell%20命令/网络/netstat.md)
       - [网卡配置](/Shell%20命令/网络/网卡配置.md)
