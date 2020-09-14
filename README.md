@@ -1,6 +1,6 @@
 ![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg) ![](https://parg.co/bDm)
 
-# 深入浅出 Linux 操作系统
+# Linux 实践笔记
 
 操作系统是管理计算机硬件与软件资源的计算机程序，同时也是计算机系统的内核与基石。计算机系统由硬件和软件两部分组成。操作系统 (OS，Operating System) 是配置在计算机硬件上的第一层软件，是对硬件系统的首次扩充。它在计算机系统中占据了特别重要的地位；而其它的诸如汇编程序、编译程序、数据库管理系统等系统软件，以及大量的应用软件，都将依赖于操作系统的支持，取得它的服务。以 Intel Pentium 系统产品系列的模型为例：
 
