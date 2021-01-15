@@ -211,7 +211,7 @@ shutdown +2 "The machine will shutdown" # 2min 后关机，并通知在线者
 真机环境中，在图形界面和文本界面间快捷键切换：
 
 ```
-Ctrl+Alt+F(n) , 其中F(n)为F1-F6，为6个控制台；
+Ctrl+Alt+F(n), 其中F(n)为F1-F6，为6个控制台；
 Ctrl+ALT+F7；
 eg:CTRL+ALT+F1是进入文本界面，CTRL+ALT+F7才是图形界面。
 ```
