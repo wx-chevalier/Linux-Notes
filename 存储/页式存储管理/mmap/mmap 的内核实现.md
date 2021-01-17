@@ -273,7 +273,3 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
 ```
 
 该方法将 vma->vm_ops 字段设置为 null，用此来表示，该 vma 代表的内存段为 anonymous 模式。再之后，mmap_region 方法会调用 vma_link 方法将新创建的 vma 链接到 struct mm_struct 的 mmap 字段和 mm_rb 字段，标识该进程拥有 vma 表示的这段内存区域。最后，mmap_region 方法返回该内存段的起始地址给用户。
-
-# Page Fault
-
-上文中提及，当我们向操作系统申请内存时，操作系统并不是直接分配给我们物理内存，而是只标记当前进程拥有该段内存，当真正使用这段段内存时才会分配。

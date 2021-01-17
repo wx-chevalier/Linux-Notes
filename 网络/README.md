@@ -23,3 +23,8 @@
 ![NAPI polling crossing threshold to schedule ksoftirqd](https://s2.ax1x.com/2019/11/24/MOU7h8.md.png)
 
 纵观内核处理数据包的方式，我们可以肯定地有机会停止处理。如果两次 softirq 处理调用之间的时间增加，则在处理数据包之前，数据包可能会在 NIC RX 队列中停留一段时间。这可能是导致 CPU 内核死锁的原因，也可能是导致内核无法运行 softirqs 的缓慢原因。
+
+# Reference
+
+- 关于 IO 模型、IO 多路复用参阅《[Concurrent-Series](https://github.com/wx-chevalier/Concurrent-Series?q=)》；
+- 关于网络协议参阅《[Network-Series](https://github.com/wx-chevalier/Network-Series?q=)》
