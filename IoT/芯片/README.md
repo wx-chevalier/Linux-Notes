@@ -1,5 +1,5 @@
 # 芯片
 
-# TBD
+# Links
 
 - https://mp.weixin.qq.com/s/7-ONDI7HpRRUIc15sr2trQ
