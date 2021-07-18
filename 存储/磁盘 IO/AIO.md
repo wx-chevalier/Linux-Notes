@@ -23,7 +23,7 @@ By the way, you may be wondering if this means you'll have to create a different
 
 aio_return() checks the result of an IO request once you find out the request has been finished. If the request succeeded, this function returns the number of bytes read. If it failed then the function returns -1.
 
-# 案例-代码实现
+# 案例：代码实现
 
 ```c
 #include <sys/types.h>
