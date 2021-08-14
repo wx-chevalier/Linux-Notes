@@ -9,5 +9,3 @@ Shell 是命令解释器。它不仅是操作系统内核和用户之间的隔�
 ```sh
 $ sudo apt-get install hollywood cmatrix
 ```
-
-![Hollywood 效果](http://7xkt0f.com1.z0.glb.clouddn.com/65DCC0D6-CDE4-4199-9669-2CA32259FB15.png)
