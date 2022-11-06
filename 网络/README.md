@@ -1,6 +1,6 @@
 # 网络 IO
 
-在[虚拟存储](https://ng-tech.icu/DistributedSystem-Series/#/?q=虚拟存储存储)一章中我们讨论了内核空间与用户空间的划分，即针对 32 位 Linux 操作系统而言，将最高的 1G 字节（从虚拟地址 0xC0000000 到 0xFFFFFFFF），供内核使用，称为内核空间，而将较低的 3G 字节（从虚拟地址 0x00000000 到 0xBFFFFFFF），供各个进程使用，称为用户空间。
+在[虚拟存储](https://wx-chevalier.github.io/DistributedSystem-Series/#/?q=虚拟存储存储)一章中我们讨论了内核空间与用户空间的划分，即针对 32 位 Linux 操作系统而言，将最高的 1G 字节（从虚拟地址 0xC0000000 到 0xFFFFFFFF），供内核使用，称为内核空间，而将较低的 3G 字节（从虚拟地址 0x00000000 到 0xBFFFFFFF），供各个进程使用，称为用户空间。
 
 ![读取网卡数据](https://i.postimg.cc/C1jPjGMZ/image.png)
 
@@ -28,4 +28,4 @@
 
 - NGTE 扩展阅读：关于 IO 模型、IO 多路复用参阅《[Concurrent-Series](https://github.com/wx-chevalier/Concurrent-Series?q=)》；关于网络协议参阅《[Network-Series](https://github.com/wx-chevalier/Network-Series?q=)》
 
-- [2017-调整 Linux I/O 调度器优化系统性能](https://cubox.pro/c/qhBwRv): Linux I/O 调度器是Linux内核中的一个组成部分，用户可以通过调整这个调度器来优化系统性能。本文首先介绍Linux I/O 调度器的结构，然后介绍如何根据不同的存储器来设置Linux I/O 调度器从而达到优化系统性能。
+- [2017-调整 Linux I/O 调度器优化系统性能](https://cubox.pro/c/qhBwRv): Linux I/O 调度器是 Linux 内核中的一个组成部分，用户可以通过调整这个调度器来优化系统性能。本文首先介绍 Linux I/O 调度器的结构，然后介绍如何根据不同的存储器来设置 Linux I/O 调度器从而达到优化系统性能。
