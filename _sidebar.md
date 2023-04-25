@@ -126,4 +126,7 @@
         
     - [6.2 芯片](/20.电子电路/芯片/README.md)
       
-  - [7 INTRODUCTION](/INTRODUCTION.md)
+  - 7 99.参考资料 [1]
+    - [7.1 操作系统实战 45 讲](/99.参考资料/2021-操作系统实战%2045%20讲/README.md)
+      
+  - [8 INTRODUCTION](/INTRODUCTION.md)
