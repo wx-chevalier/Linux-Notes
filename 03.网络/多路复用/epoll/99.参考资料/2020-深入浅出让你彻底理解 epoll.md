@@ -1,4 +1,4 @@
-> [原文地址](https://zhuanlan.zhihu.com/p/380021220)
+> [原文地址](https://juejin.cn/post/6940453515353391140#comment)
 
 # 深入浅出让你彻底理解 epoll
 
@@ -116,3 +116,73 @@ socket 结构体，包含了两个重要数据：进程 ID 和端口号。进程
 ## 4.3 IO 多路复用的进化
 
 ### 4.3.1 对比 epoll 与 select
+
+select，poll 和 epoll 都是“IO 多路复用”，那为什么还会有性能差距呢？篇幅限制，这里我们只简单对比 select 和 epoll 的基本原理差异。对于内核，同时处理的 socket 可能有很多，监视进程也可能有多个。所以监视进程每次“批量处理数据”，都需要告诉内核它“关心的 socket”。内核在唤醒监视进程时，就可以把“关心的 socket”中，就绪的 socket 传给监视进程。
+
+换句话说，在执行系统调用 select 或 epoll_create 时，入参是“关心的 socket”，出参是“就绪的 socket”。而 select 与 epoll 的区别在于：
+
+- select （一次 O(n)查找）
+
+1. 每次传给内核一个用户空间分配的 fd_set 用于表示“关心的 socket”。其结构（相当于 bitset）限制了只能保存 1024 个 socket。
+2. 每次 socket 状态变化，内核利用 fd_set 查询 O(1)，就能知道监视进程是否关心这个 socket。
+3. 内核是复用了 fd_set 作为出参，返还给监视进程（所以每次 select 入参需要重置）。
+
+然而监视进程必须遍历一遍 socket 数组 O(n)，才知道哪些 socket 就绪了。
+
+- epoll （全是 O(1)查找）
+
+1. 每次传给内核一个实例句柄。这个句柄是在内核分配的红黑树 rbr+双向链表 rdllist。只要句柄不变，内核就能复用上次计算的结果。
+2. 每次 socket 状态变化，内核就可以快速从 rbr 查询 O(1)，监视进程是否关心这个 socket。同时修改 rdllist，所以 rdllist 实际上是“就绪的 socket”的一个缓存。
+3. 内核复制 rdllist 的一部分或者全部（LT 和 ET），到专门的 epoll_event 作为出参。
+
+所以监视进程，可以直接一个个处理数据，无需再遍历确认。
+
+![select 与 epoll 代码对比](https://assets.ng-tech.icu/item/20230505133423.png)
+
+另外，epoll_create 底层实现，到底是不是红黑树，其实也不太重要（完全可以换成 hashtable）。重要的是 efd 是个指针，其数据结构完全可以对外透明的修改成任意其他数据结构。
+
+### 4.3.2 API 发布的时间线
+
+另外，我们再来看看网络 IO 中，各个 api 的发布时间线。就可以得到两个有意思的结论。
+
+- 1983，socket 发布在 Unix(4.2 BSD)
+- 1983，select 发布在 Unix(4.2 BSD)
+- 1994，Linux 的 1.0，已经支持 socket 和 select
+- 1997，poll 发布在 Linux 2.1.23
+- 2002，epoll 发布在 Linux 2.5.44
+
+1、socket 和 select 是同时发布的。这说明了，select 不是用来代替传统 IO 的。这是两种不同的用法(或模型)，适用于不同的场景。
+
+2、select、poll 和 epoll，这三个“IO 多路复用 API”是相继发布的。这说明了，它们是 IO 多路复用的 3 个进化版本。因为 API 设计缺陷，无法在不改变 API 的前提下优化内部逻辑。所以用 poll 替代 select，再用 epoll 替代 poll。
+
+# 5.Diss 环节
+
+## 5.1 关于 IO 模型的分类
+
+关于阻塞，非阻塞，同步，异步的分类，这么分自然有其道理。但是在操作系统的角度来看这样分类，容易产生误解，并不好。
+
+![IO 模型](https://assets.ng-tech.icu/item/20230505134238.png)
+
+### 5.1.1 阻塞和非阻塞
+
+Linux 下所有的 IO 模型都是阻塞的，这是收发数据的基本原理导致的。阻塞用户线程是一种高效的方式。你当然可以写一个程序，socket 设置成非阻塞模式，在不使用监视器的情况下，依靠死循环完成一次 IO 操作。但是这样做的效率实在是太低了，完全没有实际意义。
+
+换句话说，阻塞不是问题，运行才是问题，运行才会消耗 CPU。IO 多路复用不是减少了阻塞，是减少了运行。上下文切换才是问题，IO 多路复用，通过减少运行的进程，有效的减少了上下文切换。
+
+### 5.1.2 同步和异步
+
+Linux 下所有的 IO 模型都是同步的。BIO 是同步的，select 同步的，poll 同步的，epoll 还是同步的。Java 提供的 AIO，也许可以称作“异步”的。但是 JVM 是运行在用户态的，Linux 没有提供任何的异步支持。因此 JVM 提供的异步支持，和你自己封装成“异步”的框架是没有本质区别的（你完全可以使用 BIO 封装成异步框架）。
+
+所谓的“同步“和”异步”只是两种事件分发器（event dispatcher）或者说是两个设计模式（Reactor 和 Proactor）。都是运行在用户态的，两个设计模式能有多少性能差异呢？
+
+- Reactor 对应 java 的 NIO，也就是 Channel，Buffer 和 Selector 构成的核心的 API。
+- Proactor 对应 java 的 AIO，也就是 Async 组件和 Future 或 Callback 构成的核心的 API。
+
+### 5.1.3 我的分类
+
+我认为 IO 模型只分两类：
+
+- 更加符合程序员理解和使用的，进程模型；
+- 更加符合操作系统处理逻辑的，IO 多路复用模型。
+
+对于“IO 多路复用”的事件分发，又分为两类：Reactor 和 Proactor。
