@@ -108,7 +108,9 @@ epoll_ctl: Operation not permitted
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/wait.h>
+
 #define PROCESS_NUM 10
+
 static int create_and_bind (char *port)
 {
     int fd = socket(PF_INET, SOCK_STREAM, 0);
