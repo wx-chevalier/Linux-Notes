@@ -144,7 +144,9 @@
         
     - [6.2 芯片](/20.电子电路/芯片/README.md)
       
-  - 7 99.参考资料 [1]
-    - [7.1 操作系统实战 45 讲](/99.参考资料/2021-操作系统实战%2045%20讲/README.md)
+  - 7 40.macOS [1]
+    - [7.1 macOS Internals](/40.macOS/2023-macOS%20Internals.md)
+  - 8 99.参考资料 [1]
+    - [8.1 操作系统实战 45 讲](/99.参考资料/2021-操作系统实战%2045%20讲/README.md)
       
-  - [8 INTRODUCTION](/INTRODUCTION.md)
+  - [9 INTRODUCTION](/INTRODUCTION.md)
