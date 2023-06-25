@@ -251,7 +251,7 @@ int main (int argc, char *argv[])
 
 答案：ep->poll_wait 是 epoll 实例中另一个等待队列。当被监视的文件是一个 epoll 类型时，需要用这个等待队列来处理递归唤醒。
 
-在阅读内核代码过程中，ep->wq 还算挺好理解，但我发现伴随着 ep->wq 唤醒， 还有一个 ep->poll_wait 的唤醒过程。比如下面这段代码，在 eventpoll.c 中出现了很多次：
+在阅读内核代码过程中，ep->wq 还算挺好理解，但我发现伴随着 ep->wq 唤醒，还有一个 ep->poll_wait 的唤醒过程。比如下面这段代码，在 eventpoll.c 中出现了很多次：
 
 ```cpp
 /* If the file is already "ready" we drop it inside the ready list */
@@ -291,7 +291,7 @@ int main (int argc, char *argv[])
 
 通过扫描 ep->rdllist 链表，内核可以轻松获取当前有事件触发的 fd。而不是像 select()/poll() 那样全量扫描所有被监视的 fd，再从中找出有事件就绪的。因此可以说这一点决定了 epoll 的性能是远高于 select/poll 的。
 
-看到这里你可能又产生了一个小小的疑问：**为什么 epoll 中事件就绪的 fd 会“主动”跑到 rdllist 中去，而不用全量扫描就能找到它们呢？** 这是因为每当调用 epoll_ctl 新增一个被监视的 fd 时，都会注册一下这个 fd 的回调函数 ep_poll_callback， 当网卡收到数据包会触发一个中断，中断处理函数再回调 ep_poll_callback 将这个 fd 所属的“epitem”添加至 epoll 实例中的 rdllist 中。
+看到这里你可能又产生了一个小小的疑问：**为什么 epoll 中事件就绪的 fd 会“主动”跑到 rdllist 中去，而不用全量扫描就能找到它们呢？** 这是因为每当调用 epoll_ctl 新增一个被监视的 fd 时，都会注册一下这个 fd 的回调函数 ep_poll_callback，当网卡收到数据包会触发一个中断，中断处理函数再回调 ep_poll_callback 将这个 fd 所属的“epitem”添加至 epoll 实例中的 rdllist 中。
 
 ### **Question 6：ep->ovflist 的作用是什么？**
 
@@ -327,7 +327,7 @@ ovflist 上的 fd 会合入 rdllist 上等待下一次扫描；如果 txlist 上
 
 答案：用来保存这个 epitem 的 poll 等待队列。
 
-首先介绍下什么是 epitem。epitem 是 epoll 中很重要的一种数据结构， 是红黑树和 rdllist 的基本组成元素。需要监听的文件和事件信息，都被包装在 epitem 结构里。
+首先介绍下什么是 epitem。epitem 是 epoll 中很重要的一种数据结构，是红黑树和 rdllist 的基本组成元素。需要监听的文件和事件信息，都被包装在 epitem 结构里。
 
 ```cpp
 struct epitem {
