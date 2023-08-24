@@ -28,4 +28,4 @@
 
 - NGTE 扩展阅读：关于 IO 模型、IO 多路复用参阅《[Concurrent-Notes](https://github.com/wx-chevalier/Concurrent-Notes?q=)》；关于网络协议参阅《[Network-Notes](https://github.com/wx-chevalier/Network-Notes?q=)》
 
-- [2017-调整 Linux I/O 调度器优化系统性能](https://cubox.pro/c/qhBwRv): Linux I/O 调度器是 Linux 内核中的一个组成部分，用户可以通过调整这个调度器来优化系统性能。本文首先介绍 Linux I/O 调度器的结构，然后介绍如何根据不同的存储器来设置 Linux I/O 调度器从而达到优化系统性能。
+- [2017~调整 Linux I/O 调度器优化系统性能](https://cubox.pro/c/qhBwRv): Linux I/O 调度器是 Linux 内核中的一个组成部分，用户可以通过调整这个调度器来优化系统性能。本文首先介绍 Linux I/O 调度器的结构，然后介绍如何根据不同的存储器来设置 Linux I/O 调度器从而达到优化系统性能。
