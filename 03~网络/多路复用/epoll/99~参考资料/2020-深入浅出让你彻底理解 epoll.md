@@ -27,7 +27,7 @@ Epoll 是个很老的知识点，是后端工程师的经典必修课。这种�
 
 epoll 是 Linux 内核的可扩展 I/O 事件通知机制，其最大的特点就是性能优异。下图是 libevent(一个知名的异步事件处理软件库)对 select，poll，epoll ，kqueue 这几个 I/O 多路复用技术做的性能测试。
 
-![Libevent Benchmark](https://assets.ng-tech.icu/item/20230503231114.png)
+![Libevent Benchmark](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230503231114.png)
 
 很多文章在描述 epoll 性能时都引用了这个基准测试，但少有文章能够清晰的解释这个测试结果。这是一个限制了 100 个活跃连接的基准测试，每个连接发生 1000 次读写操作为止。纵轴是请求的响应时间，横轴是持有的 socket 句柄数量。随着句柄数量的增加，epoll 和 kqueue 响应时间几乎无变化，而 poll 和 select 的响应时间却增长了非常多。
 
@@ -43,7 +43,7 @@ epoll 是 Linux 内核的可扩展 I/O 事件通知机制，其最大的特点�
 
 我们以网卡接收数据举例，回顾一下之前我分享过的网卡接收数据的过程。
 
-![网卡接收数据的过程](https://assets.ng-tech.icu/item/20230503231352.png)
+![网卡接收数据的过程](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230503231352.png)
 
 为了方便理解，我尽量简化技术细节，可以把接收数据的过程分为 4 步：
 
@@ -58,7 +58,7 @@ epoll 是 Linux 内核的可扩展 I/O 事件通知机制，其最大的特点�
 
 阻塞是进程调度的关键一环，指的是进程在等待某事件发生之前的等待状态。请看下表，在 Linux 中，进程状态大致有 7 种（在 include/linux/sched.h 中有更多状态）：
 
-![](https://assets.ng-tech.icu/item/20230503231452.png)
+![](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230503231452.png)
 
 从说明中其实就可以发现，“可运行状态”会占用 CPU 资源，另外创建和销毁进程也需要占用 CPU 资源（内核）。重点是，当进程被"阻塞/挂起"时，是不会占用 CPU 资源的。换个角度来讲。为了支持多任务，Linux 实现了进程调度的功能（CPU 时间片的调度）。而这个时间片的切换，只会在“可运行状态”的进程间进行。因此“阻塞/挂起”的进程是不占用 CPU 资源的。
 
@@ -68,7 +68,7 @@ epoll 是 Linux 内核的可扩展 I/O 事件通知机制，其最大的特点�
 
 内核当然可以很容易的修改一个进程的状态，问题是网络 IO 中，内核该修改那个进程的状态。
 
-![网卡](https://assets.ng-tech.icu/item/20230503231757.png)
+![网卡](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230503231757.png)
 
 socket 结构体，包含了两个重要数据：进程 ID 和端口号。进程 ID 存放的就是执行 connect，send，read 函数，被挂起的进程。在 socket 创建之初，端口号就被确定了下来，操作系统会维护一个端口号到 socket 的数据结构。
 
@@ -95,7 +95,7 @@ socket 结构体，包含了两个重要数据：进程 ID 和端口号。进程
 
 所以使用了 NAPI 的驱动，接收数据过程可以简化描述为：
 
-![网卡接收数据简化](https://assets.ng-tech.icu/item/20230503232034.png)
+![网卡接收数据简化](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230503232034.png)
 
 1. NIC 接收到数据，通过 DMA 方式写入内存(Ring Buffer 和 sk_buff)。
 2. NIC 发出中断请求（IRQ），告诉内核有新的数据过来了。
@@ -109,7 +109,7 @@ socket 结构体，包含了两个重要数据：进程 ID 和端口号。进程
 
 内核优化“进程间上下文切换”的技术叫的“IO 多路复用”，思路和 NAPI 是很接近的。每个 socket 不再阻塞读写它的进程，而是用一个专门的线程，批量的处理用户态数据，这样就减少了线程间的上下文切换。
 
-![](https://assets.ng-tech.icu/item/20230504104135.png)
+![](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230504104135.png)
 
 作为 IO 多路复用的一个实现，select 的原理也很简单。所有的 socket 统一保存执行 select 函数的（监视进程）进程 ID。任何一个 socket 接收了数据，都会唤醒“监视进程”。内核只要告诉“监视进程”，哪些 socket 已经就绪，监视进程就可以批量处理了。
 
@@ -137,7 +137,7 @@ select，poll 和 epoll 都是“IO 多路复用”，那为什么还会有性�
 
 所以监视进程，可以直接一个个处理数据，无需再遍历确认。
 
-![select 与 epoll 代码对比](https://assets.ng-tech.icu/item/20230505133423.png)
+![select 与 epoll 代码对比](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230505133423.png)
 
 另外，epoll_create 底层实现，到底是不是红黑树，其实也不太重要（完全可以换成 hashtable）。重要的是 efd 是个指针，其数据结构完全可以对外透明的修改成任意其他数据结构。
 
@@ -161,7 +161,7 @@ select，poll 和 epoll 都是“IO 多路复用”，那为什么还会有性�
 
 关于阻塞，非阻塞，同步，异步的分类，这么分自然有其道理。但是在操作系统的角度来看这样分类，容易产生误解，并不好。
 
-![IO 模型](https://assets.ng-tech.icu/item/20230505134238.png)
+![IO 模型](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230505134238.png)
 
 ### 5.1.1 阻塞和非阻塞
 

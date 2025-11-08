@@ -243,7 +243,7 @@ int main (int argc, char *argv[])
 
 将服务端的监听 socket fd 加入到 epoll_wait 的监视集合中，这样当有客户端想要建立连接，就会事件触发 epoll_wait 返回。此时如果 10 个进程同时在 epoll_wait 同一个 epoll 实例就出现了惊群效应。所有 10 个进程都被唤起，但只有一个能成功 accept。
 
-![img](https://assets.ng-tech.icu/item/z16wmaq45n.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/z16wmaq45n.jpeg)
 
 为了解决 epoll 惊群，内核后续的高版本又提供了 EPOLLEXCLUSIVE 选项和 SO_REUSEPORT 选项，我个人理解两种解决方案思路上的不同点在于：EPOLLEXCLUSIVE 是在唤起进程阶段起作用，只唤起排在队列最前面的 1 个进程；而 SO_REUSEPORT 是在分配连接时起作用，相当于每个进程自己都有一个独立的 epoll 实例，内核来决策把连接分配给哪个 epoll。
 
@@ -278,7 +278,7 @@ int main (int argc, char *argv[])
 
 因此如果一个 epoll 实例监视了另一个 epoll 就会出现递归。举个例子，如图所示：
 
-![img](https://assets.ng-tech.icu/item/96bclsw8wa.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/96bclsw8wa.jpeg)
 
 1. epollfd1 监视了 2 个“非 epoll”类型的 fd
 2. epollfd2 监视了 epollfd1 和 2 个“非 epoll”类型的 fd
@@ -321,7 +321,7 @@ static int ep_scan_ready_list(struct eventpoll *ep,
 
 ovflist 上的 fd 会合入 rdllist 上等待下一次扫描；如果 txlist 上的 fd 没有处理完，最后也会合入 rdllist。这 3 个链表的关系是这样：
 
-![img](https://assets.ng-tech.icu/item/gqecnyhzdi.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/gqecnyhzdi.jpeg)
 
 ### **Question 7：epitem->pwqlist 队列的作用是什么？**
 
@@ -349,7 +349,7 @@ struct epitem {
 
 pwqlist、epitem、fd、epoll_entry、ep_poll_callback 间的关系是这样：
 
-![img](https://assets.ng-tech.icu/item/yl4adascmt.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/yl4adascmt.jpeg)
 
 ### **Question 8：epmutex、ep->mtx、ep->lock 3 把锁的区别是？**
 
@@ -365,7 +365,7 @@ pwqlist、epitem、fd、epoll_entry、ep_poll_callback 间的关系是这样：
 
 用户态调用 epoll_ctl()来操作 epoll 的监视文件时，需要增、删、改、查等动作有着比较高的效率。尤其是当 epoll 监视的文件数量达到百万级的时候，选用不同的数据结构带来的效率差异可能非常大。
 
-![img](https://assets.ng-tech.icu/item/77sr8e1z42.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/77sr8e1z42.jpeg)
 
 从时间(增、删、改、查、按序遍历)、空间(存储空间大小、扩展性)等方面考量，红黑树都是非常优秀的数据结构(当然这以红黑树比较高的实现复杂度作为代价)。epoll 红黑树中的 epitem 是按什么顺序组织的。阅读代码可以发现是先比较 2 个文件指针的地址大小，如果相同再比较文件 fd 的大小。
 
@@ -379,7 +379,7 @@ static inline int ep_cmp_ffd(struct epoll_filefd *p1, struct epoll_filefd *p2)
 
 epoll、epitem、和红黑树间的组织关系是这样：
 
-![img](https://assets.ng-tech.icu/item/a2hpfu4iss.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/a2hpfu4iss.jpeg)
 
 ### **Question 10：什么是水平触发、边缘触发？**
 
@@ -391,14 +391,14 @@ epoll、epitem、和红黑树间的组织关系是这样：
 
 水平触发时，客户端输入 8 个字符触发了一次读就绪事件，由于被监视文件上还有数据可读故一直返回读就绪，服务端 4 次循环每次都能取到 2 个字符，直到 8 个字符全部读完。
 
-![img](https://assets.ng-tech.icu/item/hlegv61x2w.png)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/hlegv61x2w.png)
 
 边缘触发时，客户端同样输入 8 个字符但服务端一次循环读到 2 个字符后这个读就绪事件就没有了。等客户端再输入一个字符串后，服务端关注到了数据的“变化”继续从缓冲区读接下来的 2 个字符“c”和”d”。
 
-![img](https://assets.ng-tech.icu/item/ha4us21zrf.png)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/ha4us21zrf.png)
 
 ### **小结**
 
 本文通过 10 个问题，其实也是从 10 个不同的视角去观察 epoll 这间宏伟的殿堂。至此也基本介绍完了 epoll 从监视事件，到内部数据结构组织、事件处理，最后到 epoll_wait 返回的整体工作过程。最后附上一张 epoll 相关数据结构间的关系图，在学习 epoll 过程中它曾解答了我心中不少的疑惑，我愿称之为灯塔~
 
-![img](https://assets.ng-tech.icu/item/qchx8o8yz9.jpeg)
+![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/qchx8o8yz9.jpeg)
