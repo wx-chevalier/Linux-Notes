@@ -1,4 +1,4 @@
-# 2024~Linux Shell 综合模板
+# 2024_Linux Shell 综合模板
 
 ```sh
 #!/bin/bash
