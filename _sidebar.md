@@ -81,7 +81,7 @@
     - [4.1.2 无声的平台革命：eBPF 是如何从根本上改造云原生平台的](/04~eBPF/99~参考资料/2023-无声的平台革命：eBPF%20是如何从根本上改造云原生平台的.md)
 - [5 10~Shell 命令 [11]](/10~Shell%20命令/README.md)
   - 5.1 99~参考资料 [1]
-    - [5.1.1 2021\_《Bash 脚本教程》](/10~Shell%20命令/99~参考资料/2021_《Bash%20脚本教程》/README.md)
+    - [5.1.1 2021~《Bash 脚本教程》](/10~Shell%20命令/99~参考资料/2021_《Bash%20脚本教程》/README.md)
   - [5.2 CentOS](/10~Shell%20命令/CentOS/README.md)
   - [5.3 Nushell](/10~Shell%20命令/Nushell/README.md)
   - [5.4 Shell 编程 [5]](/10~Shell%20命令/Shell%20编程/README.md)
