@@ -237,10 +237,6 @@ PrivateTmp=True 表示给服务分配独立的临时空间注意：[Service]的�
 
 设置开机自启动
 
-| 1   | systemctl enable nginx.service |
-| --- | ------------------------------ |
-|     |                                |
-
 停止开机自启动
 
 | 1   | systemctl disable nginx.service |

@@ -576,34 +576,6 @@ struct path {
 
 现在，我们已经有了足够的 vfs 知识，可以探索一下前面 hello_world 程序里的`vfs_read`和`vfs_write`函数了。
 
-```bash
-SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
-{
-	struct fd f = fdget_pos(fd);
-	ssize_t ret = -EBADF;
-
-	if (f.file) {
-		loff_t pos = file_pos_read(f.file);
-		ret = vfs_read(f.file, buf, count, &pos);
-		file_pos_write(f.file, pos);
-		fdput_pos(f);
-	}
-	return ret;
-}
-
-SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
-		size_t, count)
-{
-	struct fd f = fdget_pos(fd);
-	ssize_t ret = -EBADF;
-
-	if (f.file) {
-		loff_t pos = file_pos_read(f.file);
-		ret = vfs_write(f.file, buf, count, &pos);
-		file_pos_write(f.file, pos);
-		fdput_pos(f);
-	}
-
 	return ret;
 }
 
@@ -747,8 +719,6 @@ ssize_t do_sync_write(struct file *filp, const char __user *buf, size_t len, lof
 5. 向上层返回写的结果。
 
 可以看到，vfs 的读写很大程度上依赖于高速缓存的，实际上直接读写硬盘的机会可能没有我们想象的多。对于读任务，如果是顺序读的场景，我们的进程同步读取的数据正常情况下已经在高速缓存中存在了，我们直接从高速缓存中取出数据便返回上层，然后内核会异步地进行预读取；如果是写任务，则绝大部分时候是直接写到高速缓存中便返回，然后再异步地进行 writeback。除非高速缓存占用过多，才会同步地写回一部分数据。
-
-[![高速缓存交互](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/mmap.png)](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/mmap.png)
 
 ### 高速缓存
 
