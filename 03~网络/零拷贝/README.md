@@ -7,8 +7,7 @@
 ```c
 while((n = read(diskfd, buf, BUF_SIZE)) > 0)
     write(sockfd, buf, n);
-```
-
+```bash
 ![传统 Linux IO 流程示意图](https://pic.imgdb.cn/item/60544efe524f85ce290d4dbd.jpg)
 
 整个过程发生了 4 次用户态和内核态的上下文切换和 4 次拷贝，具体流程如下：

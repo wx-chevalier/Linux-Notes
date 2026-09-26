@@ -23,4 +23,3 @@ select，poll，epoll 本质上都是同步 IO，因为他们都需要在读写�
 | select | 描述符个数由内核中的 FD_SETSIZE 限制，仅为 1024；重新编译内核改变 FD_SETSIZE 的值，但是无法优化性能 | 每次调用 select 都会线性扫描所有描述符的状态，在 select 结束后，用户也要线性扫描 fd_set 数组才知道哪些描述符准备就绪(O(n)) | 每次调用 select 都要在用户空间和内核空间里进行内存复制 fd 描述符等信息                                                    |
 | poll   | 使用 pollfd 结构来存储 fd，突破了 select 中描述符数目的限制                                         | 类似于 select 扫描方式                                                                                                     | 需要将 pollfd 数组拷贝到内核空间，之后依次扫描 fd 的状态，整体复杂度依然是 O(n)的，在并发量大的情况下服务器性能会快速下降 |
 | epoll  | 该模式下的 Socket 对应的 fd 列表由一个数组来保存，大小不限制(默认 4k)                               | 基于内核提供的反射模式，有活跃 Socket 时，内核访问该 Socket 的 callback，不需要遍历轮询                                    | epoll 在传递内核与用户空间的消息时使用了内存共享，而不是内存拷贝，这也使得 epoll 的效率比 poll 和 select 更高             |
-

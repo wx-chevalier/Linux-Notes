@@ -20,8 +20,7 @@ function name {
 function name() {
     commands
 }
-```
-
+```bash
 所有语法都是等效的，但推荐使用 POSIX 标准语法，因为它具有最好的兼容性。
 
 ## 2. 函数参数
@@ -39,8 +38,7 @@ example_function() {
 
 # 调用函数
 example_function "arg1" "arg2"
-```
-
+```bash
 ### 2.2 特殊参数变量
 
 - `$1, $2, ...` - 位置参数
@@ -58,8 +56,7 @@ my_function() {
     local local_var="局部变量"    # 只在函数内可见
     global_var="全局变量"         # 在整个脚本可见
 }
-```
-
+```bash
 ### 3.2 全局变量
 
 ```bash
@@ -69,8 +66,7 @@ GLOBAL_CONFIG="/etc/myapp.conf"
 config_reader() {
     echo "读取配置: $GLOBAL_CONFIG"
 }
-```
-
+```bash
 ## 4. 函数返回值
 
 ### 4.1 使用 return
@@ -90,8 +86,7 @@ is_number "123"
 if [ $? -eq 0 ]; then
     echo "是数字"
 fi
-```
-
+```bash
 ### 4.2 使用输出捕获
 
 ```bash
@@ -101,8 +96,7 @@ get_timestamp() {
 
 # 捕获输出
 current_time=$(get_timestamp)
-```
-
+```bash
 ## 5. 实际应用案例
 
 ### 5.1 NAS 挂载函数
@@ -128,8 +122,7 @@ umount_nas() {
     local NASMNT="/nas10"
     mount | grep -q "$NASMNT" && umount "$NASMNT"
 }
-```
-
+```bash
 ### 5.2 文件类型检查
 
 ```bash
@@ -145,8 +138,7 @@ check_file_type() {
     [ -L "$file" ] && echo "$file 是符号链接"
     [ -x "$file" ] && echo "$file 是可执行文件"
 }
-```
-
+```bash
 ## 6. 最佳实践
 
 ### 6.1 函数文档
@@ -164,8 +156,7 @@ check_file_type() {
 function_name() {
     # 函数实现
 }
-```
-
+```bash
 ### 6.2 参数验证
 
 ```bash
@@ -183,8 +174,7 @@ process_file() {
         return 1
     fi
 }
-```
-
+```bash
 ### 6.3 错误处理
 
 ```bash
@@ -194,8 +184,7 @@ handle_error() {
 }
 
 trap 'handle_error $LINENO' ERR
-```
-
+```bash
 ## 7. 函数管理
 
 ### 7.1 函数移除
@@ -203,8 +192,7 @@ trap 'handle_error $LINENO' ERR
 ```bash
 # 删除函数定义
 unset -f function_name
-```
-
+```bash
 ### 7.2 函数列表
 
 ```bash
@@ -213,6 +201,5 @@ declare -F
 
 # 显示函数定义
 declare -f function_name
-```
-
+```bash
 通过遵循这些规范和最佳实践，可以编写出更加可靠和可维护的 Shell 函数。记住要始终进行适当的错误处理和参数验证，并为函数提供清晰的文档说明。

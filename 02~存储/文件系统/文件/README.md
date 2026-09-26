@@ -35,15 +35,15 @@ UNIX 中每个正在运行的程序都以三个已经打开的文件开始：
 
 ```c
 /**
- * virtio_driver - operations for a virtio I/O driver
- * @driver: underlying device driver (populate name and owner).
- * @id_table: the ids serviced by this driver.
- * @feature_table: an array of feature numbers supported by this driver.
- * @feature_table_size: number of entries in the feature table array.
- * @probe: the function to call when a device is found.  Returns 0 or -errno.
- * @remove: the function to call when a device is removed.
- * @config_changed: optional function to call when the device configuration
- *    changes; may be called in interrupt context.
+ - virtio_driver - operations for a virtio I/O driver
+ - @driver: underlying device driver (populate name and owner).
+ - @id_table: the ids serviced by this driver.
+ - @feature_table: an array of feature numbers supported by this driver.
+ - @feature_table_size: number of entries in the feature table array.
+ - @probe: the function to call when a device is found.  Returns 0 or -errno.
+ - @remove: the function to call when a device is removed.
+ - @config_changed: optional function to call when the device configuration
+ -    changes; may be called in interrupt context.
  */
 struct virtio_driver {
         struct device_driver driver;
@@ -60,8 +60,7 @@ struct virtio_driver {
 #endif
 };
 
-```
-
+```bash
 在上面的简化示例中，我们可以看到驱动程序提供了读写功能，以响应文件描述符上的类似操作而被调用。设备驱动程序知道如何将这些通用请求转换为针对特定设备的特定请求或命令。
 
 为了提供对用户空间的抽象，内核通过通常称为设备层的方式提供文件接口。主机上的物理设备由特殊文件系统（例如 /dev）中的文件表示。在类似 UNIX 的系统中，所谓的设备节点具有主要编号和次要编号，它们允许内核将特定节点与其底层驱动程序相关联。
@@ -71,8 +70,7 @@ $ ls -l /dev/null /dev/zero /dev/tty
 crw-rw-rw- 1 root root 1, 3 Aug 26 13:12 /dev/null
 crw-rw-rw- 1 root root 5, 0 Sep  2 15:06 /dev/tty
 crw-rw-rw- 1 root root 1, 5 Aug 26 13:12 /dev/zero
-```
-
+```bash
 这将我们带到文件描述符，该文件描述符是用户空间用于与基础设备进行通信的句柄。从广义上讲，打开文件时发生的情况是内核正在使用路径信息将文件描述符与提供适当读写等 API 的内容进行映射。当此打开是针对设备的（上面的 / dev/sr0）时，打开的设备节点的主编号和次编号将提供内核找到正确的设备驱动程序并完成映射所需的信息。然后，内核将知道如何将进一步的调用（如读取）路由到设备驱动程序提供的基础功能。
 
 尽管非设备文件之间存在更多的层，但其操作类似。这里的抽象是挂载点；挂载文件系统具有设置映射的双重目的，因此文件系统知道提供存储的底层设备，内核知道在该挂载点下打开的文件应定向到文件系统驱动程序。像设备驱动程序一样，文件系统被写入内核提供的特定通用文件系统 API。

@@ -5,8 +5,7 @@ mmap 与 write 简单来说就是使用 mmap 替换了 read 与 write 中的 rea
 ```c
 tmp_buf = mmap(file, len);
 write(socket, tmp_buf, len);
-```
-
+```bash
 ![mmap 示意图](https://pic.imgdb.cn/item/60545141524f85ce290ef203.jpg)
 
 整个过程发生了 4 次用户态和内核态的上下文切换和 3 次拷贝，具体流程如下：
@@ -36,8 +35,7 @@ if(fcntl(diskfd, F_SETLEASE, l_type)){
     perror("kernel lease set type");
     return -1;
 }
-```
-
+```bash
 # sendfile
 
 在内核版本 2.1 中，引入了 sendfile 系统调用，以简化网络上和两个本地文件之间的数据传输。相比 mmap 来说，sendfile 同样减少了一次 CPU 拷贝，而且还减少了 2 次上下文切换。使用如下：
@@ -46,8 +44,7 @@ if(fcntl(diskfd, F_SETLEASE, l_type)){
 #include<sys/sendfile.h>
 
 ssize_t sendfile(int out_fd, int in_fd, off_t *offset, size_t count);
-```
-
+```bash
 系统调用 sendfile()在代表输入文件的描述符 in_fd 和代表输出文件的描述符 out_fd 之间传送文件内容（字节）。描述符 out_fd 必须指向一个套接字，而 in_fd 指向的文件必须是可以 mmap 的。这些局限限制了 sendfile 的使用，使 sendfile 只能将数据从文件传递到套接字上，反之则不行。使用 sendfile 不仅减少了数据拷贝的次数，还减少了上下文切换，数据传送始终只发生在 kernel space。
 
 ![sendfile 示意图](https://pic.imgdb.cn/item/6054539b524f85ce29107de6.jpg)
@@ -85,8 +82,7 @@ sendfile 只适用于将数据从文件拷贝到套接字上，限定了它的�
 #define _GNU_SOURCE         /* See feature_test_macros(7) */
 #include <fcntl.h>
 ssize_t splice(int fd_in, loff_t *off_in, int fd_out, loff_t *off_out, size_t len, unsigned int flags);
-```
-
+```bash
 splice 调用在两个文件描述符之间移动数据，而不需要数据在内核空间和用户空间来回拷贝。他从 fd_in 拷贝 len 长度的数据到 fd_out，但是有一方必须是管道设备，这也是目前 splice 的一些局限性。flags 参数有以下几种取值：
 
 - **SPLICE_F_MOVE**：尝试去移动数据而不是拷贝数据。这仅仅是对内核的一个小提示：如果内核不能从 pipe 移动数据或者 pipe 的缓存不是一个整页面，仍然需要拷贝数据。Linux 最初的实现有些问题，所以从 2.6.21 开始这个选项不起作用，后面的 Linux 版本应该会实现。

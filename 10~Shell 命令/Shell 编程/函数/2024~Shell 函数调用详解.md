@@ -18,8 +18,7 @@ function function_name() {
 function_name() {
     commands
 }
-```
-
+```bash
 ### 函数参数处理
 
 函数可以接收参数,在函数内部通过特殊变量访问:
@@ -36,8 +35,7 @@ function example() {
     shift
     echo "移动后的第一个参数: $1"
 }
-```
-
+```bash
 ### 函数返回值
 
 Shell 函数可以通过两种方式返回值:
@@ -53,8 +51,7 @@ function get_name() {
     echo "John Doe"
 }
 name=$(get_name)  # 通过命令替换获取返回值
-```
-
+```bash
 ## 全局函数库
 
 您可以将常用函数存储在函数库文件中以便复用。
@@ -89,8 +86,7 @@ function die() {
     echo "错误: $message" >&2
     exit "$code"
 }
-```
-
+```bash
 ### 加载函数库
 
 有两种方式加载函数库:
@@ -101,8 +97,7 @@ function die() {
 
 # 方式2: 使用 source 命令
 source /path/to/functions.sh [参数]
-```
-
+```bash
 ### 使用示例
 
 ```sh
@@ -126,8 +121,7 @@ echo "转换结果: $(to_lower "$text")"
 
 # 错误处理示例
 [ -f "config.txt" ] || die "配置文件不存在" 2
-```
-
+```bash
 ## 递归函数
 
 Shell 支持函数递归调用。下面是计算阶乘的示例:
@@ -150,8 +144,7 @@ function factorial() {
 # 使用示例
 result=$(factorial 5)
 echo "5的阶乘是: $result"
-```
-
+```bash
 ## 后台函数调用
 
 函数可以在后台执行,适用于需要并行处理的场景:
@@ -180,8 +173,7 @@ main_process
 # 完成后终止进度显示
 kill $progress_pid
 echo "完成!"
-```
-
+```bash
 ## 最佳实践
 
 1. **局部变量**：总是使用 local 声明函数内的变量
@@ -224,6 +216,5 @@ function process_file() {
 
     return $status
 }
-```
-
+```bash
 通过合理使用这些功能和最佳实践,可以编写出更加健壮和可维护的 Shell 脚本。

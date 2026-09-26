@@ -2,7 +2,7 @@
 
 **常用命令：**
 
-```
+```bash
 查看所有网卡IP地址：ip addr
 
 启动防火墙：systemctl start firewalld
@@ -47,23 +47,20 @@
 
 重启：init 6 或reboot
 关机：init 0或shutdown
-```
-
+```bash
 **使用 firewall 开放 Linux 端口**：
 
 开启 80 端口(开放 10050 到 10060 端口):
 
-```
+```bash
 firewall-cmd --zone=public --permanent --add-port=80/tcp
 firewall-cmd --permanent --zone=public --add-port=10050-10060/tcp
-```
-
+```bash
 重启防火墙:
 
-```
+```bash
 firewall-cmd --reload
-```
-
+```bash
 命令含义：
 
 命令含义：
@@ -87,7 +84,7 @@ firewall-cmd --reload
 
 CentOS 7 用 ip 命令代替 ifconfig 命令:
 
-```
+```bash
 ip [选项] 操作对象{link|addr|route...}
 # ip link show # 显示网络接口信息
 # ip link set eth0 upi # 开启网卡
@@ -104,118 +101,102 @@ ip [选项] 操作对象{link|addr|route...}
 # ip route add default via 192.168.0.254 dev eth0 # 设置默认网关为192.168.0.254
 # ip route del 192.168.4.0/24 # 删除192.168.4.0网段的网关
 # ip route del default # 删除默认路由
-```
-
+```bash
 **DHCP：ip 地址释放和获取**
 
-```
+```bash
 #dhclient -r          #释放ip
 #dhclient             #重新获取ip
-```
-
+```bash
 (注：使用 ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 设置 VM 中 CentOS7 的运行级别为 3 之后，需要手动设置其 ip 地址，才能使用 XShell 连接)
 
 **Linux 下安装(卸载)KDE 和 GNOME：**
 
 1.查看是否安装了桌面系统
 
-```
+```bash
 yum grouplist
 yum grouplist ｜more ←如果输出太长，可以使用“｜more”分页显示
-```
-
+```bash
 在 grouplist 的输出结果中的“InstalledGroups:”部分中，
 
 在 grouplist 的输出结果中的“InstalledGroups:”部分中，如果你能找到“XWindow System”和“GNOME Desktop Environment 或 KDE (K DesktopEnvironment)或 XFCE-4.4”的话，证明你安装了桌面环境。
 
 在 grouplist 的输出结果中的“InstalledGroups:”部分中，如果你能找到“XWindow System”和“GNOME Desktop Environment 或 KDE (K DesktopEnvironment)或 XFCE-4.4”的话，证明你安装了桌面环境。2.如果系统安装之前采用最小化安装，没有安装桌面，那么先安装桌面系统：
 
-```
+```bash
 yum group install "X Window System"
-```
-
+```bash
 3.安装 GNOME 桌面环境
 
-```
+```bash
 yum group install "Desktop"
-```
-
+```bash
 4.安装 KDE 桌面环境
 
-```
+```bash
 yumgroupinstall "KDE Desktop"
-```
-
+```bash
 5.卸载 GNOME 桌面环境
 
-```
+```bash
 yum group remove "GNOME Desktop Environment"
-```
-
+```bash
 6.卸载 KDE 桌面环境
 
-```
+```bash
 yum group remove "KDE Desktop"
-```
-
+```bash
 **从命令行界面切换到图形界面：**
 
 **从命令行界面切换到图形界面：**
 方法 1：运行命令
 
-```
+```bash
 startx
-```
-
+```bash
 需要先配置图形界面信息
 
 需要先配置图形界面信息(old)方法 2：修改/etc/inittab 文件中的
 
-```
+```bash
 id:3:initdefault，将3改为5，重新启动系统；
-```
-
+```bash
 方法 3：进入图形界面：
 
-```
+```bash
 init 5
-```
-
+```bash
 **从图形界面进入命令行界面：**
 
-```
+```bash
 init 3
-```
-
+```bash
 **开机默认文本界面:**
 
-```
+```bash
 systemctl set-default multi-user.target
-```
-
+```bash
 **开机默认图形界面:**
 
-```
+```bash
 systemctl set-default graphical.target
-```
-
+```bash
 shutdown 关机命令：
 
-```
+```bash
 shutdown now # 立即关机
 shutdown +2 # 2 min 后关机
 shutdown 10:01 # 10:01关机
 shutdown +2 "The machine will shutdown" # 2min 后关机，并通知在线者
-```
-
+```bash
 真机环境中，在图形界面和文本界面间快捷键切换：
 
-```
+```bash
 Ctrl+Alt+F(n), 其中F(n)为F1-F6，为6个控制台；
 Ctrl+ALT+F7；
 eg:CTRL+ALT+F1是进入文本界面，CTRL+ALT+F7才是图形界面。
-```
-
+```bash
 **虚拟机静态 IP 设置及主机名设置绑定**
 
 打开终端，root 权限下：vim /etc/sysconfig/network-scripts/ifcfg-enoXXXX，
@@ -224,34 +205,30 @@ eg:CTRL+ALT+F1是进入文本界面，CTRL+ALT+F7才是图形界面。
 
 在插入模式下：修改
 
-```
+```bash
 BOOTPROTO=static
 ONBOOT=yes
-```
-
+```bash
 例如添加：
 
-```
+```bash
 IPADDR0=192.168.145.130
 NETMASK=255.255.255.0
 GATEWAY0=192.168.145.1
 DNS1=8.8.8.8
 DNS2=8.8.4.4
-```
-
+```bash
 hostname crs811 #设置主机名为 crs811
 
-```
+```bash
 vi /etc/hosts #编辑配置文件
 127.0.0.1 localhost www #修改localhost.localdomain为www
-```
-
+```bash
 重启网络：
 
-```
+```bash
 systemctl restart network
-```
-
+```bash
 **Centos7 默认没有 ifconfig 和 netstat**
 
 ifconfig 使用 ip addr 命令代替，
@@ -261,10 +238,9 @@ ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 
 ifconfig 使用 ip addr 命令代替，在 cenots6 下的 ss 命令可以代替 netstat，但是现在的 ss 和以前的完全是两样，还是得装上才行方便查看端口占用和 tcp 链接攻击等等。
 Centos7 下把 net-tools 包装上就好了：
 
-```
+```bash
 yum install net-tools
-```
-
+```bash
 **CentOS7 中　 php 默认 5.4, apache 默认 2.4,Mariadb 代替了 mysql**
 
 **CentOS7 dhcp 启动失败可能原因**
@@ -306,7 +282,7 @@ yum install net-tools
 
 **Linux 课程(Cent OS)常用服务、工具和命令安装列表：**
 
-```
+```bash
 服务：
 
 DNS:    #yum -y install bind-chroot
@@ -326,4 +302,4 @@ dig - 查询域名解析:    #yum install bind-utils
 wget - 下载文件命令: #yum install wget
 
 CentOS 6 之前常用网络命令安装:    #yum install net-tools
-```
+```bash

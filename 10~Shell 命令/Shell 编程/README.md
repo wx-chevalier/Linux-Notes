@@ -8,4 +8,4 @@ Shell 是命令解释器。它不仅是操作系统内核和用户之间的隔�
 
 ```sh
 $ sudo apt-get install hollywood cmatrix
-```
+```bash
