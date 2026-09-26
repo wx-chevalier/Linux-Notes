@@ -10,7 +10,7 @@
 #!/usr/bin/python
 #!/usr/bin/python3
 #!/usr/bin/env bash
-```bash
+```
 脚本中所有的语句都会使用首行声明的解释器来进行执行，绝大部分的脚本都是以 `#!/bin/bash` 开始，这就保证了不管该脚本在何解释器中运行都会被 Bash 来执行；如果我们不添加任何的 Shebang 行，那么会默认使用 `/bin/sh` 来执行。Shebang 由 Dennis Ritchie 在 7 版 Unix 和 8 版之间在 Bell Laboratories 推出。然后，它也被添加到伯克利的 BSD 系列中
 
 ## /bin/sh
@@ -47,7 +47,7 @@ case "$1" in
 esac
 
 :
-```bash
+```
 ## /usr/bin/env bash
 
 `/usr/bin/env` 在修改后的环境中运行 bash 之类的程序。它使您的 bash 脚本具有可移植性。`＃/usr/bin/env bash` 的优点是它将使用运行用户的 `$PATH` 变量中首先出现的 bash 可执行文件。
@@ -66,7 +66,7 @@ if [ $? -ne 0 ]
 then
 	mount -t glusterfs "$p" /sharedwww/
 fi
-```bash
+```
 # 注释
 
 Shell 中以 # 表示单行注释：
@@ -78,7 +78,7 @@ Shell 中以 # 表示单行注释：
 echo "Current date : $(date) @ $(hostname)"
 echo "Network configuration"
 /sbin/ifconfig
-```bash
+```
 以＃开头的单词或行会导致该单词和该行上的所有剩余字符被忽略。这些行不是要执行 bash 的语句。实际上，bash 完全忽略了它们。这些注释称为注释。只是关于脚本的解释性文字。它使源代码更易于理解。这些说明适用于人类和其他系统管理员。它可以帮助其他系统管理员理解您的代码，逻辑，并可以帮助他们修改您编写的脚本。
 
 多行注释的定义方式如下：
@@ -92,4 +92,4 @@ echo "Adding new users to LDAP Server..."
     Profile and active directory hooks are below
 COMMENT1
 echo "Searching for user..."
-```bash
+```

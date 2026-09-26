@@ -26,7 +26,7 @@ struct epoll_event {
     __uint32_t events; /* Epoll events */
     epoll_data_t data; /* User data variable */
 };
-```bash
+```
 events 可以是以下几个宏的集合：
 
 - EPOLLIN：表示对应的文件描述符可以读(包括对端 SOCKET 正常关闭)；
@@ -83,4 +83,4 @@ for( ; ; )
         }
     }
 }
-```bash
+```

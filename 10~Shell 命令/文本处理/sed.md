@@ -17,7 +17,7 @@ d：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；
 i：插入，i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；
 p：列印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～
 s：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！
-```bash
+```
 常用示例：
 
 ```sh
@@ -58,7 +58,7 @@ sed -n '/AAA/,/BBB/s/234/567/p' 1.log # 找到包含字符AAA或者BBB的行，�
 sed -n '1,4s/234/567/p' 1.log  # 将1到4行中的234.替换成567
 cat 1.log | sed -e '3,$d' -e 's/A/a/g'   # 删除3行以后的数据，并把剩余的数据替换A为a
 sed -i '1d' 1.log   # 直接修改文件，删除第一行
-```bash
+```
 统计文件中的词频：
 
 ```sh
@@ -69,4 +69,4 @@ egrep -v '^$' |             # remove empty lines
 sort |                     # place words in alphabetical order
 uniq -c |                  # use uniq to count how many times each word occurs
 sort -n                   # order words in frequency of occurrance
-```bash
+```

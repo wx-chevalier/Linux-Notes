@@ -12,7 +12,7 @@ if [ -c "$FILENAME" ]
 then
 cp $FILENAME /dev
 fi
-```bash
+```
 ```sh
 if [ -d "$LINK_OR_DIR" ]; then
   if [ -L "$LINK_OR_DIR" ]; then
@@ -25,5 +25,5 @@ if [ -d "$LINK_OR_DIR" ]; then
     rmdir "$LINK_OR_DIR"
   fi
 fi
-```bash
+```
 # 文件遍历

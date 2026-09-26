@@ -40,7 +40,7 @@ IO 是操作系统内核最重要的组成部分之一，它的概念很广，�
 
               exit(0);
      }
-```bash
+```
 看一个简单的 hello world 程序，它的功能非常简单，就是在栈空间里分配 4096 个字节作为 buffer，从 helloworld.in 文件里读 4KB 到该 buffer 里，然后将该 buffer 的数据写到 helloworld.out 文件中。这个 hello world 进程是工作于用户态的，但由于操作系统的隔离性，用户态程序是无法直接操作硬件的，所以要通过 read,write 系统调用进入内核态，执行内核的相应代码。
 
 现在我们看看 read,write 系统调用做了什么。
@@ -75,7 +75,7 @@ SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 
 	return ret;
 }
-```bash
+```
 我们可以很清楚地看到，read,write 系统调用实际上就是对 vfs_read 和 vfs_write 的一个封装，非常直接地进入了虚拟文件系统（VFS）这一层。
 
 ### 虚拟文件系统（VFS）
@@ -194,7 +194,7 @@ struct super_block {
 	/* AIO completions deferred from interrupt context */
 	RH_KABI_EXTEND(struct workqueue_struct *s_dio_done_wq)
 };
-```bash
+```
 这里字段非常多，我们没必要一一解释，有个大概的感觉就行。有几个字段比较重要的这里提一下：
 
 1. `s_list`该字段是双向循环链表相邻元素的指针，所有的 superblock 对象都以链表的形式链在一起。
@@ -299,7 +299,7 @@ struct inode {
 #endif
 	void			*i_private; /* fs or device private pointer */
 };
-```bash
+```
 除了`i_op`外，介绍几个重要的字段：
 
 1. `i_state`表示 inode 的状态，主要是表示 inode 是否是脏的。一般的文件系统在磁盘上都有相应的 inode 数据块，内核的 inode 结构便是这个磁盘数据块的内存缓存，所以与 superblock 一样，也是需要定期写回磁盘的，否则会导致数据丢失。
@@ -341,7 +341,7 @@ struct dentry {
 	struct list_head d_subdirs;	/* our children */
 	struct hlist_node d_alias;	/* inode alias list */
 };
-```bash
+```
 介绍几个重要的字段：
 
 1. `d_inode`指向该 dentry 对应的 inode，找到了 dentry 就可以通过它找到 inode。
@@ -419,7 +419,7 @@ struct file {
 	struct mutex		f_pos_lock;
 #endif
 };
-```bash
+```
 1. `f_inode`指向对应的 inode 对象。
 2. `f_dentry`指向对应的 dentry 对象。
 3. `f_pos`表示当前文件的偏移，可见文件偏移是每个 file 对象都有自己的独立的文件偏移量。
@@ -443,7 +443,7 @@ struct path {
 	struct vfsmount *mnt;
 	struct dentry *dentry;
 };
-```bash
+```
 我们看到，每个进程都维护一个根目录和当前工作目录的信息，每一个目录由`vfsmount`和`dentry`组合唯一确定，`dentry`代表目录项前面已经说到，`vfsmount`则代表相应目录项所在文件系统的挂载信息，会在后面展开介绍一下。
 
 然后，每个进程都有当前打开的文件表，存放在进程的 files_struct 结构中。
@@ -465,7 +465,7 @@ struct files_struct {
 	unsigned long open_fds_init[1];
 	struct file __rcu * fd_array[NR_OPEN_DEFAULT];
 };
-```bash
+```
 我们只要关注一下 fd_array 这个数组就行，这个数组就存储了所有打开的 file 对象，我们应用程序拿到的文件描述符实际上就只是这个数组的索引。
 
 #### vfs 管理文件系统的注册与挂载
@@ -508,7 +508,7 @@ dentry_operations_wrapper */
 	struct lock_class_key i_mutex_key;
 	struct lock_class_key i_mutex_dir_key;
 };
-```bash
+```
 在注册文件系统的时候，我们需要提交一个`file_system_type`,这个对象主要有一个`get_sb`（linux kernel 2.6）或者是`mount`（linux kernel 3.1）对象，这个是一个函数指针，主要是分配 superblock 的，每当该类型的文件系统挂载时，就会调用该函数分配 superblock 对象。`fs_supers`引用了所有属于该文件系统类型的 superblock 对象。内核把所有注册的文件系统类型维护成一个链表，`file_system_type`的`next`字段指向链表的下一个元素。
 
 ##### 文件系统挂载
@@ -517,7 +517,7 @@ dentry_operations_wrapper */
 
 ```bash
 mount -t xfs /dev/sdb /var/cold-storage/
-```bash
+```
 当执行这条命令以后，内核会首先分配一个`vfsmount`的对象，该对象唯一标识一个挂载的文件系统。
 
 ```bash
@@ -526,7 +526,7 @@ struct vfsmount {
 	struct super_block *mnt_sb;	/* pointer to superblock */
 	int mnt_flags;
 };
-```bash
+```
 `vfsmount`主要存放了该文件系统的 superblock 对象以及该文件系统根目录（上例的/var/cold-storage/）的 dentry 对象，一开始 superblock 对象是空的。
 
 有可能这个文件系统会被挂载了多次，之前已经被挂载到其他目录上了，就意味着其 superblock 对象已经被分配，因此内核会先搜索`file_system_type`的`fs_supers`链表，如果找到，就直接用该 superblock 对象赋值给新的`vfsmount`对象的`mnt_sb`字段。
@@ -546,7 +546,7 @@ struct vfsmount {
 ```bash
 fd1 = open("helloworld.in", O_RONLY);
 fd2 = open("helloworld.out", O_WRONLY);
-```bash
+```
 这里核心的任务就是要通过传入的路径参数，最终创建出 vfs 的 file 对象。file 对象确定了以后，意味着对应的 inode,dentry 和 superblock 也确定了，4 大 vfs 对象全都准备后，可以接受读写请求了。最后返回其在内核进程的文件打开数组里的索引号给上层用户进程。
 
 具体步骤如下：
@@ -560,7 +560,7 @@ struct path {
 	struct vfsmount *mnt;
 	struct dentry *dentry;
 };
-```bash
+```
 1. 首先判断路径是绝对路径还是相对路径，决定用进程的 root 还是 pwd 字段去填充这个 path 结构体，作为起始参数。
 2. 用/去划分路径，依次解析每一层路径，对于每一层路径，首先找出其目录项的 dentry 对象，大概率会在目录项高速缓存中命中，如果缓存中没有，则读取磁盘，然后放到缓存中，并更新 path 字段。
 3. 检查该层目录的 dentry 是否是某文件系统的挂载点，如果是,则用当前 path 的`vfsmount`和`dentry`计算哈希值，找出 mount_hashtable 中的子文件系统的`vfsmount`和`dentry`，并更新 path 的`vfsmount`和`dentry`。
@@ -664,7 +664,7 @@ ssize_t vfs_write(struct file *file, const char __user *buf, size_t count, loff_
 
 	return ret;
 }
-```bash
+```
 可以看到，read，write 系统调用会根据文件描述符提取出 file 对象，这个 file 对象是在 Open 调用里已经创建好的。然后会在 file 对象中读取出当前的文件偏移量，读写都会从这个偏移量开始。然后把 file 对象，用户层 buffer 的地址，要读写的大小，以及文件偏移量作为参数传入`vfs_read`和`vfs_write`中。这两个函数主要是对 file 对象的相应文件系统的读写函数进行封装，因此，主要的逻辑就过渡到了具体文件系统上了。具体文件系统的实现逻辑各不相同，但都要以 vfs 的 4 大对象为对外的接口，然后再定义自己的数据结构与方法。
 
 对于通用的磁盘文件系统，linux 提供了很多基本的函数，很多文件系统的核心功能都是以这些基本函数为基础，再封装一层而已。我们就以常用的 xfs 文件系统为例，去简单看看它的 read 和 write 函数干了什么。
@@ -688,7 +688,7 @@ const struct file_operations xfs_file_operations = {
 	.fsync		= xfs_file_fsync,
 	.fallocate	= xfs_file_fallocate,
 };
-```bash
+```
 这是 xfs 的 f_op 的函数指针表，可以看到，它的 read,write 函数竟然直接用了内核提供的函数，非常偷懒！
 
 ```bash
@@ -727,7 +727,7 @@ ssize_t do_sync_write(struct file *filp, const char __user *buf, size_t len, lof
 	*ppos = kiocb.ki_pos;
 	return ret;
 }
-```bash
+```
 这两个函数实际上调用了具体文件系统的 aio_read 和 aio_write 函数，而 xfs 文件系统的这两个函数是自定义的，`xfs_file_aio_read`和`xfs_file_aio_write`。
 
 这两个函数的代码就有点复杂了，不过我们不需要细究 xfs 的实现细节，我们的目的是要通过 xfs 文件系统去找出通用的磁盘文件系统的共性，`xfs_file_aio_read`和`xfs_file_aio_write`虽然有很多 xfs 自己的实现细节，但其核心功能都是建立在内核提供的通用函数上的，例如`xfs_file_aio_read`最终会调用`generic_file_aio_read`函数，而`xfs_file_aio_write`则最终会调用`generic_perform_write`函数。这些通用函数是基本上所有文件系统的核心逻辑。
@@ -772,7 +772,7 @@ ssize_t do_sync_write(struct file *filp, const char __user *buf, size_t len, lof
 
 ```bash
 page索引=文件偏移 / 4KB
-```bash
+```
 ##### 查找 page
 
 首先查看当前 radix tree 的高度能支持的最大索引号是否超过当前要查询的 page 号，如果是，则继续查找，否则 page 不存在。
@@ -846,7 +846,7 @@ struct buffer_head {
 						   associated with */
 	atomic_t b_count;		/* users using this buffer_head */
 };
-```bash
+```
 1. `b_page`指向 buffer cache 所在的 page。
 2. `b_this_page`指向同属于一个 page 的下一个 buffer cache。
 3. `b_blocknr`buffer cache 在磁盘中的逻辑块号。
@@ -939,7 +939,7 @@ struct bio {
 	 */
 	struct bio_vec		bi_inline_vecs[0];
 };
-```bash
+```
 1. `bi_sector`代表这次 IO 请求的的磁盘扇区号。对于 buffer cache，可以通过 b_blocknr \* b_size / 512 计算得到。如果是 page cache，则稍微复杂一点，不过 page 的第一个磁盘块的逻辑块号也能通过文件的元信息间接计算得到。
 2. `bio_io_vec`记录了高速缓存层要提交给磁盘的数据。一个`bio_io_vec`可看作一个连续的内存段。
 3. `bi_vcnt`代表内存段的数目。
@@ -956,7 +956,7 @@ unsigned int bv_len;
 /* the byte offset within the page where the buffer resides */
 unsigned int bv_offset;
 };
-```bash
+```
 [![bio vec](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/bio-vec.png)](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/bio-vec.png)
 
 不管是 buffer cache 还是 Page cache，它们要提交读写磁盘的请求时，都要把数据封装成`bio_vec`的形式，然后放到`bio`结构内。
@@ -984,7 +984,7 @@ const struct address_space_operations xfs_address_space_operations = {
 	.is_partially_uptodate  = block_is_partially_uptodate,
 	.error_remove_page	= generic_error_remove_page,
 };
-```bash
+```
 xfs 的 read_page 函数是`xfs_vm_readpage`。我们不打算去探究该函数的代码细节，而是直接概括一下对于大部分文件系统，read_page 函数的核心业务是什么，`xfs_vm_readpage`也只是在这个核心业务的基础上再添加自己的逻辑而已。
 
 1. 检查 page 的 PG_private 字段，如果是 1，则该页被用于 buffer cache，就会对该页的每一个 buffer cache 都生成一个 bio 结构，提交给下一层。
@@ -1135,7 +1135,7 @@ struct request {
 	/* for bidi */
 	struct request *next_rq;
 };
-```bash
+```
 1. `sector`代表要传送的扇区号。
 2. `nr_sectors`代表整个请求要传送的扇区数。
 3. `current_nr_sectors`代表当前 bio 还需传输的扇区数。
@@ -1236,7 +1236,7 @@ const struct file_operations def_blk_fops = {
 	.splice_read	= generic_file_splice_read,
 	.splice_write	= generic_file_splice_write,
 };
-```bash
+```
 可以看到，VFS 隐藏了底层文件系统的实现细节，如果是块设备的话，则会激活设备驱动程序的函数。
 
 每当文件系统被映射到磁盘或分区上，或者显式执行 open()调用时，都会打开设备文件。设备文件也有自己的 page cache，buffer cache。

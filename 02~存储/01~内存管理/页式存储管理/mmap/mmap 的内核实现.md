@@ -23,13 +23,13 @@ int main(int argc, char *argv[]) {
   sleep(5);
   return 0;
 }
-```bash
+```
 执行该程序，输出 mmap 方法返回的内存地址，同时使用 pmap 命令输出该程序执行 mmap 之前以及之后的内存使用情况。mmap 方法返回的内存地址：
 
 ```sh
 $ ./a.out
 0x7f521d667000
-```bash
+```
 pmap 命令的两次输出结果：
 
 ```sh
@@ -88,7 +88,7 @@ Address           Kbytes     RSS   Dirty Mode  Mapping
 00007fffd1f07000       4       4       0 r-x--   [ anon ]
 ---------------- ------- ------- -------
 total kB            2292    1472      76
-```bash
+```
 在 pmap 命令的前后两次输出中，我们可以看到，第二次 pmap 输出多了一个 [anon] 内存段（第 47 行），而该内存段的起始地址正好是上面程序输出的地址。也就是说，该内存段就是操作系统为 mmap 系统调用新分配出来的区域。由 pmap 的输出可以看到，该内存段的大小是 4kb，实际物理内存占用（rss）是 0。
 
 实际物理内存占用为什么是 0 呢？在我们向操作系统申请内存时，比如用 malloc 或 mmap 等方式，操作系统只是标记了我们拥有一段新的内存区域，如上 pmap 输出，而并没有实际分配给我们物理内存。当我们要使用该段内存时，比如读或写，会先触发 page fault，操作系统内部的 page fault handler 会检查触发 page fault 的地址是否是我们拥有的合法地址，如果是，则在此时真正为我们分配物理内存。
@@ -112,7 +112,7 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
 out:
         return error;
 }
-```bash
+```
 该方法调用了 ksys_mmap_pgoff 方法：
 
 ```c
@@ -134,7 +134,7 @@ unsigned long ksys_mmap_pgoff(unsigned long addr, unsigned long len,
         ...
         return retval;
 }
-```bash
+```
 该方法又调用了 vm_mmap_pgoff：
 
 ```c
@@ -154,7 +154,7 @@ unsigned  longvm_mmap_pgoff(struct file *file, unsigned long addr,
         }
         return ret;
 }
-```bash
+```
 该方法又调用了 do_mmap_pgoff：
 
 ```c
@@ -167,7 +167,7 @@ do_mmap_pgoff(struct file *file, unsigned long addr,
 {
         return do_mmap(file, addr, len, prot, flags, 0, pgoff, populate, uf);
 }
-```bash
+```
 该方法又调用了 do_mmap：
 
 ```c
@@ -188,7 +188,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
         ...
         return addr;
 }
-```bash
+```
 该方法先用宏 PAGE_ALIGN，使 len 大小 page 对齐，在最开始的源码中，我们指定的 len 大小为 1，page 对其后为 4096，即 4kb，这也是为什么 pmap 输出的内存段大小为 4kb。其实，操作系统为进程分配的内存段都是以 page 为单位的。
 
 之后，该方法又调用了 get_unmapped_area 来获取 mmap 的内存段的起始地址，这个方法就不详细看了。最后，该方法又调用了 mmap_region，继续执行 mmap 操作。
@@ -226,7 +226,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
         return addr;
         ...
 }
-```bash
+```
 该方法先调用 vm_area_alloc，分配一个类型为 struct vm_area_struct 的实例，并赋值给 vma，然后设置 vma 的起始地址、结束地址等信息。这个 vma 里包含的内容，就是上面 pmap 命令输出的内存段。之后，如果我们是想 mmap 一个 file，则调用 call_mmap：
 
 ```c
@@ -235,7 +235,7 @@ static inline int call_mmap(struct file *file, struct vm_area_struct *vma)
 {
         return file->f_op->mmap(file, vma);
 }
-```bash
+```
 该方法又调用了 file->f_op->mmap 指针指向的方法，以 ext4 文件系统为例，该方法为 ext4_file_mmap：
 
 ```c
@@ -250,7 +250,7 @@ static int ext4_file_mmap(struct file *file, struct vm_area_struct *vma)
         }
         return 0;
 }
-```bash
+```
 该方法的作用是初始化 vma 的 vm_ops 字段，使其值为 ext4_file_vm_ops。再回到上面的 mmap_region 方法，如果我们 mmap 的是一块 anonymous 的内存区域，则会调用 vma_set_anonymous 方法：
 
 ```c
@@ -259,5 +259,5 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
 {
         vma->vm_ops = NULL;
 }
-```bash
+```
 该方法将 vma->vm_ops 字段设置为 null，用此来表示，该 vma 代表的内存段为 anonymous 模式。再之后，mmap_region 方法会调用 vma_link 方法将新创建的 vma 链接到 struct mm_struct 的 mmap 字段和 mm_rb 字段，标识该进程拥有 vma 表示的这段内存区域。最后，mmap_region 方法返回该内存段的起始地址给用户。

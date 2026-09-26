@@ -34,7 +34,7 @@ $ awk -F : 'NR > 1 && NR <=5 {print $1}' /etc/passwd
 $ awk '!visited[$0]++' your_file > deduplicated_file
 # 显示与 root 相关的用户
 $ awk -F : '/^root/{print $1, $2}'  /etc/passwd
-```bash
+```
 awk 也常用于与其他系统命令的协同操作：
 
 ```sh
@@ -42,7 +42,7 @@ awk 也常用于与其他系统命令的协同操作：
 $ free -m | grep buffers\/ | awk '{print $NF}'
 
 $ ps aux | awk '{print $2}'  #获取所有进程PID
-```bash
+```
 ## 内置变量
 
 ```sh
@@ -57,4 +57,4 @@ NR                 已读的记录数
 OFS                输出域分隔符
 ORS                输出记录分隔符
 RS                 控制记录分隔符
-```bash
+```

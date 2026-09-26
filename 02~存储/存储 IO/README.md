@@ -40,7 +40,7 @@ Disk seek 10,000,000 ns
 Read 1 MB sequentially from disk 20,000,000 ns
 
 Send packet CA->Netherlands->CA 150,000,000 ns
-```bash
+```
 # Links
 
 - https://my.oschina.net/ericquan8/blog/1836953

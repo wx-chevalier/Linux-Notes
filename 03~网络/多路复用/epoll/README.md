@@ -41,7 +41,7 @@ FD_SET(sock3, &readfds);
 
 // 调用 select
 select(max_fd + 1, &readfds, NULL, NULL, NULL);
-```bash
+```
 ### 主要问题
 
 1. **重复拷贝问题**
@@ -82,7 +82,7 @@ while True:
     ready_fds = epoll_wait(epoll)
     for fd in ready_fds:
         handle_ready_fd(fd)
-```bash
+```
 2. **回调机制**
 
    - 为每个 fd 指定回调函数

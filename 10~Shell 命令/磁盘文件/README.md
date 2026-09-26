@@ -16,4 +16,4 @@ $ du -sm .
 
 # 查看目录下文件尺寸
 $ ls -l --sort=size --block-size=M
-```bash
+```

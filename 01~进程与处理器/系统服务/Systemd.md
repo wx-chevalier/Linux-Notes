@@ -6,7 +6,7 @@
 $ sudo /etc/init.d/apache2 start
 # 或者
 $ service apache2 start
-```bash
+```
 当 sysvinit 系统初始化的时候，它是串行启动，并且会将所有可能用到的后台服务进程全部启动运行；系统必须等待所有的服务都启动就绪之后，才允许用户登录，导致启动时间过长与系统资源浪费。并且 init 进程只是执行启动脚本，不管其他事情，脚本需要自己处理各种情况，使得脚本复杂度增加很多。Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为系统的启动和管理提供一套完整的解决方案；Systemd 并不是一个命令，而是一组命令，涉及到系统管理的方方面面。
 
 ```sh
@@ -33,7 +33,7 @@ $ systemd-analyze critical-chain
 
 # 显示指定服务的启动流
 $ systemd-analyze critical-chain atd.service
-```bash
+```
 Systemd 可以管理所有系统资源。不同的资源统称为 Unit(单位)，Unit 一共分成 12 种。
 
 - Service unit：系统服务
@@ -60,7 +60,7 @@ $ sysystemctl status bluetooth.service
 
 # 显示远程主机的某个 Unit 的状态
 $ systemctl -H root@rhel7.example.com status httpd.service
-```bash
+```
 我们最常用的就是 Unit 管理命令：
 
 ```sh
@@ -90,7 +90,7 @@ $ systemctl show -p CPUShares httpd.service
 
 # 设置某个 Unit 的指定属性
 $ sudo systemctl set-property httpd.service CPUShares=500
-```bash
+```
 每一个 Unit 都有一个配置文件，告诉 Systemd 怎么启动这个 Unit。Systemd 默认从目录 `/etc/systemd/system/` 读取配置文件。但是，里面存放的大部分文件都是符号链接，指向目录 `/usr/lib/systemd/system/`，真正的配置文件存放在那个目录。systemctl enable 命令用于在上面两个目录之间，建立符号链接关系。配置文件的基础格式如下：
 
 ```sh
@@ -103,7 +103,7 @@ ExecStart=/usr/bin/atd
 
 [Install]
 WantedBy=multi-user.target
-```bash
+```
 centos 7 以上是用 Systemd 进行系统初始化的，Systemd 是 Linux 系统中最新的初始化系统(init)，它主要的设计目标是克服 sysvinit 固有的缺点，提高系统的启动速度。关于 Systemd 的详情介绍在[这里](http://www.ibm.com/developerworks/cn/linux/1407_liuming_init3/)。
 
 Systemd 服务文件以.service 结尾，比如现在要建立 nginx 为开机启动，如果用 yum install 命令安装的，yum 命令会自动创建 nginx.service 文件，直接用命令

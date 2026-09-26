@@ -9,24 +9,24 @@ hello() { echo 'Hello world!' ; }
 
 # 调用 hello 函数
 hello
-```bash
+```
 您可以将命令行参数传递给用户定义的函数。定义 hello 如下：
 
 ```sh
 hello() { echo "Hello $1, let us be a friend." ; }
-```bash
+```
 您可以使用 hello 函数并传递参数，如下所示：
 
 ```sh
 hello Vivek
 
 # Hello Vivek, let us be a friend.
-```bash
+```
 {...} 中的一行函数必须以分号结尾。否则，您会在屏幕上看到错误：
 
 ```sh
 xrpm() { rpm2cpio "$1" | cpio -idmv; }
-```bash
+```
 # 函数枚举
 
 要显示定义的函数名称，请使用 declare 命令。在 shell 提示符下键入以下命令：
@@ -47,4 +47,4 @@ command_not_found_handle ()
         return 127;
     fi
 }
-```bash
+```

@@ -18,7 +18,7 @@ Shell 首先检查命令是否是内部命令，不是的话再检查是否是�
 if [ -r ~/.profile ]; then . ~/.profile; fi
 
 case "$-" in *i*) if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;; esac
-```bash
+```
 ![](https://zwischenzugs.files.wordpress.com/2018/01/shell-startup-actual.png?w=840)
 
 ## 执行目录
@@ -31,13 +31,13 @@ case "$-" in *i*) if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;; esac
 # do something in current dir
 (cd /some/other/dir && other-command)
 # continue in original dir
-```bash
+```
 在 Shell 脚本的首部，我们经常会定位到脚本所在的目录：
 
 ```sh
 #!/bin/bash
 cd "$(dirname "$0")" # Go to the script's directory
-```bash
+```
 # 历史记录
 
 最常用的历史记录检索方式就是使用 `history`:
@@ -50,14 +50,14 @@ $ history | more
 
 # 查看最新的命令
 $ history | tail -3
-```bash
+```
 反馈的命令记录中存在编号，我们可以根据编号来重复执行历史记录中的命令：
 
 ```sh
 $ !4
 cat /etc/redhat-release
 Fedora release 9 (Sulphur)
-```bash
+```
 使用 `history -c` 能够清除所有的历史记录，或者设置 HISTSIZE 环境变量以避免记录：
 
 ```sh
@@ -65,7 +65,7 @@ $ export HISTSIZE=0
 $ history
 
 # [Note that history did not display anything]
-```bash
+```
 `history` 命令往往只会记录用户交互式的命令内容，更详细的操作记录可以使用 `more /var/log/messages` 查看记录文件。
 
 # 输入辅助
@@ -87,7 +87,7 @@ $ cp somefile{,.bak}
 
 # 会被扩展成所有可能的组合，并创建一个目录树
 $ mkdir -p test-{a,b,c}/subtest-{1,2,3}
-```bash
+```
 我们也可以使用 Control+R 来进行交互式检索：
 
 ```sh
@@ -96,7 +96,7 @@ which will display the reverse-i-search prompt]
 (reverse-i-search)`red': cat /etc/redhat-release
 [Note: Press enter when you see your command,
 which will execute the command from the history]
-```bash
+```
 # 命令连接
 
 如果我们希望仅在前一个命令执行成功之后执行后一个命令，则需要使用 && 命令连接符：
@@ -109,12 +109,12 @@ cd /my_folder \
 && rm *.jar \
 && svn co path to repo \
 && mvn compile package install
-```bash
+```
 如果我们希望能够无论前一个命令是否成功皆开始执行下一个命令，则可以使用 `;` 分隔符：
 
 ```sh
 cd /my_folder; rm *.jar; svn co path to repo; mvn compile package install
-```bash
+```
 ## 管道
 
 - `|` 一种管道，其左方是一个命令的 STNOUT，将作为管道右方的另一个命令的 STDIN。例如：echo ‘test text’ | wc -l
@@ -133,7 +133,7 @@ $ find . -name "*.java" | xargs grep "Stock"
 
 # 清除所有后缀名为 tmp 的临时文件
 $ find /tmp -name "*.tmp" | xargs rm
-```bash
+```
 ## 后台运行
 
 当用户注销 (logout) 或者网络断开时，终端会收到 HUP (hangup) 信号从而关闭其所有子进程；我们可以通过让进程忽略 HUP 信号，或者让进程运行在新的会话里从而成为不属于此终端的子进程来进行后台执行。
@@ -148,7 +148,7 @@ $ screen -dmS Urumchi
 
 # 连接到当前伪终端
 $ screen -r Urumchi
-```bash
+```
 # Tmux
 
 Tmux 是一个工具，用于在一个终端窗口中运行多个终端会话；还可以通过 Tmux 使终端会话运行于后台或是按需接入、断开会话。本部分是对于 [tmux shortcuts & cheatsheet](https://parg.co/UrT) 一文的总结提取
@@ -174,7 +174,7 @@ tmux kill-session -t myname
 
 # 关闭全部 Session
 tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill
-```bash
+```
 在 Tmux 中，使用 `ctrl + b` 前缀，然后可以使用如下命令
 
 ```sh
@@ -220,4 +220,4 @@ PREFIX : resize-pane -L 20 (Resizes the current pane left by 20 cells)
 PREFIX : resize-pane -R 20 (Resizes the current pane right by 20 cells)
 PREFIX : resize-pane -t 2 20 (Resizes the pane with the id of 2 down by 20 cells)
 PREFIX : resize-pane -t -L 20 (Resizes the pane with the id of 2 left by 20 cells)
-```bash
+```

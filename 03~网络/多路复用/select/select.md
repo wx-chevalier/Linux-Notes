@@ -17,7 +17,7 @@ while (1) {
         }
     }
 }
-```bash
+```
 **存在的问题：**
 
 - 当多个客户端连接时，服务器会阻塞在第一个客户端
@@ -29,7 +29,7 @@ while (1) {
 
 ```c
 select(int nfds, fd_set *r, fd_set *w, fd_set *e, struct timeval *timeout)
-```bash
+```
 ### 2.2 主要参数
 
 - `maxfdp1`: 描述符总数
@@ -56,7 +56,7 @@ struct pollfd {
     short events;    // 感兴趣的事件
     short revents;   // 实际发生的事件
 }
-```bash
+```
 ### 3.2 相比 select 的改进
 
 - 突破了文件描述符数量限制
@@ -95,7 +95,7 @@ while (1) {
         }
     }
 }
-```bash
+```
 ## 5. 内核处理流程
 
 1. 从用户空间复制 fd_set 到内核空间

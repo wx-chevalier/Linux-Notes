@@ -66,7 +66,7 @@ int main (void)
     close(epfd);
     return 0;
 }
-```bash
+```
 编译、运行上面的代码，会打印出下列信息：
 
 ```cpp
@@ -75,7 +75,7 @@ gcc epoll_test.c -o epdemo
 target_fd 4
 ret -1, errno 1
 epoll_ctl: Operation not permitted
-```bash
+```
 正常打开了"txt"文件 fd=4, 但调用 epoll_ctl 监视这个 fd 时却 ret=-1 失败了, 并且错误码为 1，错误信息为"Operation not permitted"。错误码指明这个 fd 不能够被 epoll 监视。
 
 **那什么样的 fd 才可以被 epoll 监视呢？**
@@ -237,7 +237,7 @@ int main (int argc, char *argv[])
     close (sfd);
     return EXIT_SUCCESS;
 }
-```bash
+```
 将服务端的监听 socket fd 加入到 epoll_wait 的监视集合中，这样当有客户端想要建立连接，就会事件触发 epoll_wait 返回。此时如果 10 个进程同时在 epoll_wait 同一个 epoll 实例就出现了惊群效应。所有 10 个进程都被唤起，但只有一个能成功 accept。
 
 ![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/z16wmaq45n.jpeg)
@@ -269,7 +269,7 @@ int main (int argc, char *argv[])
     /* We have to call this outside the lock */
     if (pwake)
         ep_poll_safewake(&ep->poll_wait);
-```bash
+```
 查阅很多资料后才搞明白其实 epoll 也是一种文件类型，其底层驱动也**实现了 file_operations 中的 poll 函数**，因此一个 epoll 类型的 fd 可以被其他 epoll 实例监视。而 epoll 类型的 fd 只会有“读就绪”的事件。当 epoll 所监视的非 epoll 类型文件有“读就绪”事件时，当前 epoll 也会进入“读就绪”状态。
 
 因此如果一个 epoll 实例监视了另一个 epoll 就会出现递归。举个例子，如图所示：
@@ -307,7 +307,7 @@ static int ep_scan_ready_list(struct eventpoll *ep,
                   int (*sproc)(struct eventpoll *,
                        struct list_head *, void *),
                   void *priv)
-```bash
+```
 由于 rdllist 链表业务非常繁忙（epoll 增加监视文件、修改监视文件、有事件触发...等情况都需要操作 rdllist)，所以在复制数据到用户空间时，加了一个 ep->mtx 互斥锁来保护 epoll 自身数据结构线程安全，此时其他执行流程里有争抢 ep->mtx 的操作都会因命中 ep->mtx 进入休眠。
 
 但加锁期间很可能有新事件源源不断地产生，进而调用 ep_poll_callback(ep_poll_callback 不用争抢 ep->mtx 所以不会休眠)，新触发的事件需要一个地方来收集，不然就丢事件了。这个用来临时收集新事件的链表就是 ovflist。我的理解是：引入 ovflist 后新产生的事件就不用因为想向 rdllist 里写而去和 ep_send_events_proc 争抢自旋锁(ep->lock), 同时 ep_send_events_proc 也可以放心大胆地在无锁(不持有 ep->lock)的情况下修改 rdllist。
@@ -334,7 +334,7 @@ struct epitem {
     struct epoll_event event;  // 关注的事件
     /* 其他成员省略 */
 };
-```bash
+```
 回忆一下上文说到，每当用户调用 epoll_ctl()新增一个监视文件，都要给这个文件注册一个回调函数 ep_poll_callback, 当网卡收到数据后软中断会调用这个 ep_poll_callback 把这个 epitem 加入到 ep->rdllist 中。
 
 **pwdlist 就是跟 ep_poll_callback 注册相关的**。
@@ -369,7 +369,7 @@ static inline int ep_cmp_ffd(struct epoll_filefd *p1, struct epoll_filefd *p2)
 {
     return (p1->file > p2->file ? +1 : (p1->file < p2->file ? -1 : p1->fd - p2->fd));
 }
-```bash
+```
 epoll、epitem、和红黑树间的组织关系是这样：
 
 ![img](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/a2hpfu4iss.jpeg)

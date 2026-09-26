@@ -17,7 +17,7 @@ do_page_fault(struct pt_regs *regs, unsigned long error_code)
         ...
 }
 NOKPROBE_SYMBOL(do_page_fault);
-```bash
+```
 该方法先从 cr2 寄存器中读出产生这个 page fault 的虚拟内存地址，然后再调用 `__do_page_fault` 方法。
 
 ```c
@@ -34,7 +34,7 @@ __do_page_fault(struct pt_regs *regs, unsigned long hw_error_code,
                 do_user_addr_fault(regs, hw_error_code, address);
 }
 NOKPROBE_SYMBOL(__do_page_fault);
-```bash
+```
 该方法会检查该地址是属于 kernel space 还是 user space，如果是 user space，则会调用 do_user_addr_fault 方法。继续 do_user_addr_fault 方法：
 
 ```c
@@ -65,7 +65,7 @@ good_area:
         ...
 }
 NOKPROBE_SYMBOL(do_user_addr_fault);
-```bash
+```
 该方法会先从 mm 中找包含 address 的内存段，如果没有，则说明我们访问了一个非法地址，该方法进而会调用 bad_area 方法，向当前进程发送一个 SIGSEGV signal。如果找到了对应的内存段，则会调用 handle_mm_fault 方法继续处理。
 
 ```c
@@ -83,7 +83,7 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
         return ret;
 }
 EXPORT_SYMBOL_GPL(handle_mm_fault);
-```bash
+```
 该方法又调用了 `__handle_mm_fault` 方法：
 
 ```c
@@ -111,7 +111,7 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
         ...
         return handle_pte_fault(&vmf);
 }
-```bash
+```
 此时，vmf->pte 应该为 null。该方法通过 vma_is_anonymous 方法，判断 vmf->vma 对应的内存段是否是 anonymous 的，如果是，则调用 do_anonymous_page，如果不是，比如 mmap file 产生的 vma，则调用 do_fault。
 
 ```c
@@ -133,5 +133,5 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
         return ret;
         ...
 }
-```bash
+```
 该方法先调用 alloc_zeroed_user_highpage_movable 分配一个新的 page，这个就是物理内存了。然后调用 mk_pte 方法，把 page 的地址信息等记录到 entry 里。最后，把这个 entry 写入到 vmf->pte 指向的内存中。这样在下次再访问这个 page 对应的虚拟内存地址时，page walk 就可以在 pte 中找到这个 page 了。

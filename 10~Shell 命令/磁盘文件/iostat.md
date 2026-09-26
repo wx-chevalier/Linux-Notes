@@ -5,12 +5,12 @@ $ iostat -x -d 2
 
 Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
 vda               0.00     0.25    0.04    0.53     0.56     4.88    19.25     0.00    6.85    3.09    7.14   0.25   0.01
-```bash
+```
 iostat 算是比较重要的查看块设备运行状态的工具，它数据的来源是 Linux 操作系统的/proc/diskstats。一般来说用法如下：`iostat -mtx 2`，即每 2 秒钟采集一组数据。假如我们对某块磁盘进行读写压测：
 
 ```sh
 $ fio --name=randwrite --rw=randwrite --bs=4k --size=20G --runtime=1200 --ioengine=libaio --iodepth=64 --numjobs=1 --rate_iops=5000 --filename=/dev/sdf --direct=1 --group_reporting
-```bash
+```
 使用 iostat 可以查看如下结果：
 
 ![](https://ww1.sinaimg.cn/large/007rAy9hgy1g2104el9uaj30u00fi40h.jpg)
